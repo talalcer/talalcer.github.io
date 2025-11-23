@@ -1,8 +1,8 @@
 {
     "name": "أجندة العمل الشهرية",
-    "short_name": "الأجندة",
+    "short_name": "أجندة طلال",
     "description": "تقويم لحساب أيام العمل ورصيد الإجازات.",
-    "start_url": "your_agenda.html",
+    "start_url": "agenda.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#2563eb",
