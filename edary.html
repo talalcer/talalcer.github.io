@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+  <script src="edary.js">
+    <title>طلال السريتي</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f3f4;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+            /* Right-to-left layout */
+            text-align: right;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .group-buttons {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .group-buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #0078d7;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .group-buttons button:hover {
+            background-color: #005a9e;
+        }
+        
+        .lists {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .list-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .list-container h3 {
+            margin-bottom: 10px;
+        }
+        
+        .search-box {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        
+        ul li {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        ul li:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .no-data {
+            text-align: center;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>الجهاز المركزي للمحاسبات</h2>
+        <h2>ادارة مراقبة حسابات المؤسسات العلاجية</h2>
+        <h2>الامر الاداري نوفمبر 2025</h2>
+        <h6>جميع الحقوق / طلال السريتي</h6>
+        <div class="group-buttons" id="group-buttons"></div>
+
+        <!-- Global search buttons -->
+        <div class="group-buttons">
+            <button id="all-employees-btn">البحث في جميع الموظفين</button>
+            <button id="all-departments-btn">البحث في جميع الجهات</button>
+        </div>
+
+        <div class="lists">
+            <div class="list-container">
+                <h3>الموظفون</h3>
+                <input type="text" class="search-box" id="employee-search" placeholder="ابحث عن موظف...">
+                <ul id="employee-list"></ul>
+                <div class="no-data" id="employee-empty" style="display:none;">اختر موظف</div>
+            </div>
+
+            <div class="list-container">
+                <h3>الجهات</h3>
+                <input type="text" class="search-box" id="department-search" placeholder="ابحث عن جهة...">
+                <ul id="department-list"></ul>
+                <div class="no-data" id="department-empty" style="display:none;">اختر الجهة</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>  
