@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تعليمات استخدام محلل الوقود الذكي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary-color: #2c3e50;
+            /* لون أزرق غامق */
+            --accent-color: #27ae60;
+            /* لون أخضر للتركيز */
+            --bg-color: #f8f9fa;
+            /* لون خلفية هادئ */
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        /* رأس الصفحة */
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        header .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        /* البطاقات */
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--accent-color);
+            /* زخرفة جانبية */
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-top: 0;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        /* تنسيق القوائم والنصوص */
+        
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-right: 25px;
+        }
+        
+        li::before {
+            content: '✔';
+            /* علامة صح */
+            color: var(--accent-color);
+            position: absolute;
+            right: 0;
+            font-weight: bold;
+        }
+        /* مربعات الصور */
+        /* تنسيق حاوية الصور */
+        
+        .img-container {
+            width: 100%;
+            height: 400px;
+            /* تحديد ارتفاع ثابت ومناسب للصورة */
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            background-color: #fcfcfc;
+            /* لون خلفية فاتح للفراغات حول الصورة */
+            /* لتوسيط الصورة تماماً */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* تنسيق الصورة نفسها */
+        
+        .img-container img {
+            max-width: 100%;
+            /* لا تتجاوز عرض الحاوية */
+            max-height: 100%;
+            /* لا تتجاوز ارتفاع الحاوية */
+            width: auto;
+            /* الحفاظ على الأبعاد الأصلية */
+            height: auto;
+            /* الحفاظ على الأبعاد الأصلية */
+            object-fit: contain;
+            /* السحر يكمن هنا: يظهر الصورة كاملة داخل الإطار دون قص */
+            display: block;
+        }
+        /* تمييز النصوص */
+        
+        .highlight {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .security-note {
+            background-color: #e3f2fd;
+            border: 1px solid #90caf9;
+            color: #0d47a1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        /* زر الرابط */
+        
+        .action-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background 0.3s;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background-color: var(--accent-color);
+        }
+        /* الفوتر */
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        footer .name {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        /* للهواتف */
+        
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header>
+            <h1>تعليمات استخدام تطبيق محلل الوقود الذكي</h1>
+            <div class="subtitle">الدليل الشامل لإعداد الملفات والحصول على التقارير</div>
+        </header>
+
+        <div class="card">
+            <h2>1. تجهيز ملف البيانات</h2>
+            <p>ملف البيانات يجب أن يكون ملف إكسيل مستخرج من منظومة الوقود، ويرجى التحقق من أنه بالشكل التالي:</p>
+
+            <div class="img-placeholder">
+                <img src="fuel-img/picture1.png" alt="شكل شيت البيانات الاساسية">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>2. شيت الإجازات (Holiday)</h2>
+            <p>يجب إضافة شيت جديد داخل الملف يحتوي على تواريخ الإجازات الرسمية ويسمى <span class="highlight">holiday</span>.</p>
+            <p>يجب أن يتضمن عمودين: الأول <b>التاريخ</b> والثاني <b>السبب</b>، بالشكل التالي:</p>
+
+            <div class="img-placeholder">
+                <img src="fuel-img/picture2.png" alt="شكل شيت الإجازات">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>3. شيت سعة التانك (Tank)</h2>
+            <p>يجب إضافة شيت جديد يحتوي على سعة التانك للمركبات ويسمى <span class="highlight">tank</span>.</p>
+            <p>يجب أن يتضمن: <b>رقم اللوحة</b> و <b>سعة التانك</b> (نوع السيارة اختياري)، بالشكل التالي:</p>
+
+            <div class="img-placeholder">
+                <img src="fuel-img/picture3.png" alt="شكل شيت سعة التانك">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>4. طريقة الاستخدام</h2>
+            <ul>
+                <li>من واجهة التطبيق، اضغط لاختيار الملف أو قم بسحبه وإفلاته داخل المربع المخصص.</li>
+                <li>سيظهر اسم الملف المختار للتأكيد.</li>
+            </ul>
+
+            <div class="img-placeholder">
+                <img src="fuel-img/picture4.png" alt="شكل واجهة التطبيق">
+            </div>
+
+            <div class="security-note">
+                <strong>ملاحظة هامة:</strong> الملف آمن تماماً! لا يتم رفع ملفات البيانات إلى الإنترنت بل تتم معالجتها محلياً على جهازك، وينشأ ملف النتائج محلياً.
+            </div>
+
+            <p>اضغط بعد ذلك على زر <b>"بدء المعالجة والتحليل"</b>.</p>
+        </div>
+
+        <div class="card">
+            <h2>5. مراحل المعالجة والتحليل</h2>
+            <p>سيقوم التطبيق بتنفيذ العمليات التالية آلياً:</p>
+            <ul>
+                <li>قراءة ملف البيانات الأساسية، الإجازات الرسمية، وسعة التانك.</li>
+                <li>تنظيف البيانات بحذف الأعمدة والصفوف الفارغة وتخزينها في شيت <span class="highlight">بيانات_نظيفة</span>.</li>
+                <li>استخراج عمليات الصرف بدون رقم لوحة أو شاسيه في شيت <span class="highlight">صرف_بدون_رقم_لوحة</span>.</li>
+                <li>استخراج الصرف في العطلات الأسبوعية (الجمعة والسبت) في شيت <span class="highlight">عطلات_نهاية_الأسبوع</span>.</li>
+                <li>استخراج الكميات التي تزيد عن 50 لتر في شيت <span class="highlight">استهلاك_مرتفع</span>.</li>
+                <li>استخراج الكميات التي تتجاوز سعة التانك المسجلة في شيت <span class="highlight">تجاوز_السعة</span>.</li>
+                <li>استخراج الصرف في الإجازات الرسمية في شيت <span class="highlight">اجازة_رسمية</span>.</li>
+                <li>استخراج تكرار الصرف لنفس السيارة في نفس اليوم (بفرق دقائق) في شيت <span class="highlight">تكرار_صرف_يومي</span>.</li>
+                <li>إنشاء جدول محوري (Pivot) لملخص الصرف لكل سيارة مرتب تنازلياً في شيت <span class="highlight">ملخص_حسب_اللوحة</span>.</li>
+                <li>إنشاء جدول محوري لملخص الصرف لكل محطة مرتب تنازلياً في شيت <span class="highlight">ملخص_حسب_المحطة</span>.</li>
+            </ul>
+
+            <p>أثناء المعالجة، سيتم استعراض شريط التقدم (تستغرق العملية ثواني أو دقائق معدودة).</p>
+
+            <div class="img-placeholder" style="height: 100px;">
+                <img src="fuel-img/picture5.png" alt="شكل شريط التقدم">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>6. استلام النتائج</h2>
+            <p>في نهاية المعالجة، سيتم تحميل ملف إكسيل تلقائياً باسم:</p>
+            <p style="direction: ltr; text-align: center; font-weight: bold; color: #d35400;">Fuel_Analysis_Comprehensive_Report.xlsx</p>
+            <p><i>ملاحظة: إذا قمت بعمل معالجة أخرى دون حذف الملف السابق، سيتم إضافة رقم للملف الجديد مثل (1).</i></p>
+            <hr>
+            <p> يقوم المراجع بعد ذلك بفحص نتائج التحليل، جمع أدلة الإثبات المناسبة، وإعداد التقرير اللازم.</p>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="https://talalcer.github.io/fuel-app.html" class="action-btn">الانتقال لاستخدام التطبيق</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>تحياتي للجميع</p>
+        <div class="name">طلال السريتي</div>
+        <p>&copy; 2025 جميع الحقوق محفوظة</p>
+    </footer>
+
+</body>
+
+</html>
