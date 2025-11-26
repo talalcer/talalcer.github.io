@@ -22,6 +22,7 @@
             --text: #1F2937;
             --text-light: #6B7280;
             --danger: #EF4444;
+            --danger-bg: #FEF2F2;
             --success: #10B981;
             --border-radius: 12px;
         }
@@ -40,27 +41,121 @@
             padding: 20px;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
         }
         
         .app-container {
             width: 100%;
             max-width: 500px;
-            /* لضمان شكل الموبايل */
             background: transparent;
+            position: relative;
+            z-index: 1;
         }
-        /* رأس التطبيق */
+        /* رأس الصفحة */
         
         header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #e5e7eb;
         }
         
         h1 {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             color: var(--primary);
+        }
+        /* تنسيق حقوق الملكية */
+        
+        p.copyright {
+            margin: 8px 0 0;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+        /* إضافة قائمة */
+        
+        .add-main-task {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 10px;
+            z-index: 10;
+        }
+        
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+        
+        button.btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        button.btn-primary:active {
+            background: var(--primary-dark);
+            transform: scale(0.95);
+        }
+        
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            padding-bottom: 80px;
+        }
+        /* البطاقات */
+        
+        .main-task-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .main-task-header {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .main-task-card.expanded {
+            border-color: #e0e7ff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+        
+        .main-task-card.expanded .main-task-header {
+            background: #FAFAFA;
+            border-bottom: 1px solid #F3F4F6;
         }
         
         .file-controls button {
@@ -74,98 +169,52 @@
             color: var(--text);
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-        /* إضافة مهمة رئيسية */
         
-        .add-main-task {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: var(--border-radius);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        input[type="text"] {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1rem;
-        }
-        
-        button.btn-primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        button.btn-primary:active {
-            background: var(--primary-dark);
-        }
-        /* قائمة المهام */
-        
-        .task-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        /* كارت المهمة الرئيسية */
-        
-        .main-task-card {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
-            transition: transform 0.2s;
-        }
-        
-        .main-task-header {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            border-bottom: 1px solid transparent;
-            cursor: pointer;
-        }
-        
-        .main-task-card.expanded .main-task-header {
-            border-bottom: 1px solid #F3F4F6;
-            background: #FAFAFA;
+        #fileInput {
+            display: none;
         }
         
         .task-title {
             font-weight: 700;
             font-size: 1.1rem;
             flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .badge {
+            background: #EEF2FF;
+            color: var(--primary);
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 10px;
         }
         
         .task-actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .delete-btn {
-            background: #FEE2E2;
+            background: var(--danger-bg);
             color: var(--danger);
             border: none;
             width: 32px;
             height: 32px;
-            border-radius: 50%;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+        
+        .delete-btn:hover {
+            background: #FEE2E2;
+            transform: scale(1.05);
         }
         
         .toggle-icon {
@@ -177,24 +226,34 @@
         .expanded .toggle-icon {
             transform: rotate(180deg);
         }
-        /* المنطقة الفرعية */
         
         .sub-tasks-area {
             display: none;
             padding: 15px;
             background: #fff;
+            animation: slideDown 0.3s ease;
         }
         
         .expanded .sub-tasks-area {
             display: block;
         }
-        /* قائمة المهام الفرعية */
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         
         .sub-task-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
+            padding: 12px 0;
             border-bottom: 1px solid #F3F4F6;
         }
         
@@ -205,22 +264,22 @@
         .sub-task-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             flex: 1;
+            cursor: pointer;
         }
-        /* Checkbox Custom */
         
         .custom-checkbox {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border: 2px solid #D1D5DB;
             border-radius: 6px;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
         
         .sub-task-item.completed .custom-checkbox {
@@ -231,45 +290,152 @@
         .sub-task-text {
             font-size: 0.95rem;
             transition: 0.2s;
+            line-height: 1.4;
         }
         
         .sub-task-item.completed .sub-task-text {
             text-decoration: line-through;
             color: var(--text-light);
-            opacity: 0.7;
+            opacity: 0.6;
         }
-        /* إضافة مهمة فرعية */
         
         .add-sub-form {
             display: flex;
             gap: 10px;
             margin-top: 15px;
-            padding-top: 10px;
+            padding-top: 15px;
             border-top: 1px dashed #E5E7EB;
         }
         
         .add-sub-form input {
-            padding: 8px;
+            padding: 10px;
             font-size: 0.9rem;
             background: #F9FAFB;
         }
         
         .btn-small {
-            padding: 8px 12px;
-            font-size: 0.8rem;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            border-radius: 6px;
         }
-        /* إخفاء input file */
-        
-        #fileInput {
-            display: none;
-        }
-        /* رسالة فارغة */
         
         .empty-state {
             text-align: center;
             color: var(--text-light);
-            margin-top: 50px;
+            margin-top: 60px;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+            opacity: 0.5;
+        }
+        /* =========================================
+           تصميم النافذة المنبثقة (Modal)
+           ========================================= */
+        
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            /* تأثير ضبابي عصري */
+            z-index: 999;
+            display: none;
+            /* مخفي افتراضياً */
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-box {
+            background: white;
+            width: 100%;
+            max-width: 350px;
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .modal-overlay.active .modal-box {
+            transform: scale(1);
+        }
+        
+        .modal-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--danger-bg);
+            color: var(--danger);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.5rem;
+        }
+        
+        .modal-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+        
+        .modal-desc {
+            color: var(--text-light);
             font-size: 0.9rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn-modal {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        
+        .btn-confirm {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-confirm:active {
+            background: #DC2626;
+        }
+        
+        .btn-cancel {
+            background: #E5E7EB;
+            color: var(--text);
+        }
+        
+        .btn-cancel:active {
+            background: #D1D5DB;
         }
     </style>
 </head>
@@ -278,7 +444,7 @@
 
     <div class="app-container">
         <header>
-            <h1>📝 مهامي</h1>
+            <h1>✅ مهامي</h1>
             <p class="copyright">جميع الحقوق محفوظة © طلال السريتي talalcer@gmail.com</p>
             <div class="file-controls">
                 <button onclick="exportData()">💾 حفظ كملف</button>
@@ -288,18 +454,31 @@
         </header>
 
         <div class="add-main-task">
-            <input type="text" id="newMainTaskInput" placeholder="اسم القائمة الجديدة...">
+            <input type="text" id="newMainTaskInput" placeholder="أضف قائمة جديدة (مثال: العمل)...">
             <button class="btn-primary" onclick="addMainTask()">+</button>
         </div>
 
-        <div id="tasksContainer" class="task-list">
-        </div>
+        <div id="tasksContainer" class="task-list"></div>
 
-        <div id="emptyState" class="empty-state">لا توجد قوائم مهام حالياً</div>
+        <div id="emptyState" class="empty-state">
+            <span class="empty-icon">📝</span> ابدأ بإضافة قائمة مهامك الأولى
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <div class="modal-icon">🗑</div>
+            <div class="modal-title">تأكيد الحذف</div>
+            <div class="modal-desc" id="modalMessage">هل أنت متأكد من رغبتك في حذف هذا العنصر؟ لا يمكن التراجع عن هذا الإجراء.</div>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="closeModal()">إلغاء</button>
+                <button class="btn-modal btn-confirm" id="confirmDeleteBtn">حذف</button>
+            </div>
+        </div>
     </div>
 
     <script>
-    // disable right click
+        // disable right click
         document.addEventListener('contextmenu', event => event.preventDefault());
 
         document.onkeydown = function(e) {
@@ -327,61 +506,105 @@
 
 
 
-        const STORAGE_KEY = 'MySmartTodos_V2';     // حالة التطبيق (State)
+        const STORAGE_KEY = 'MySmartTodos_V2';
         let todos = [];
 
-        // عند تحميل الصفحة
+        // متغير لتخزين دالة الحذف المؤقتة
+        let pendingDeleteAction = null;
+
+        // 1. عند فتح التطبيق
         window.onload = () => {
-            const saved = localStorage.getItem('myTodosApp');
-            if (saved) {
-                todos = JSON.parse(saved);
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (savedData) {
+                try {
+                    todos = JSON.parse(savedData);
+                } catch (e) {
+                    todos = [];
+                }
+            } else {
+                todos = [];
             }
             render();
         };
 
-        // حفظ في LocalStorage
-        function saveToLocal() {
-            localStorage.setItem('myTodosApp', JSON.stringify(todos));
-            render();
+        function autoSave() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
         }
 
-        // إضافة مهمة رئيسية
+        // --- وظائف النافذة المنبثقة (Modal) ---
+        const modal = document.getElementById('deleteModal');
+        const modalMsg = document.getElementById('modalMessage');
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+
+        // فتح النافذة
+        function openConfirmModal(message, actionCallback) {
+            modalMsg.textContent = message;
+            pendingDeleteAction = actionCallback; // تخزين الدالة لتنفيذها لاحقاً
+            modal.classList.add('active');
+        }
+
+        // إغلاق النافذة
+        function closeModal() {
+            modal.classList.remove('active');
+            pendingDeleteAction = null;
+        }
+
+        // عند الضغط على زر "حذف" في النافذة
+        confirmBtn.onclick = () => {
+            if (pendingDeleteAction) {
+                pendingDeleteAction(); // تنفيذ الحذف الفعلي
+                autoSave();
+                render();
+            }
+            closeModal();
+        };
+
+        // إغلاق النافذة عند الضغط خارج المربع
+        modal.onclick = (e) => {
+            if (e.target === modal) closeModal();
+        };
+
+        // --- الوظائف الأساسية ---
+
         function addMainTask() {
             const input = document.getElementById('newMainTaskInput');
             const title = input.value.trim();
 
-            if (!title) return alert("الرجاء كتابة اسم للقائمة");
+            if (!title) return;
 
             const newTask = {
                 id: Date.now(),
                 title: title,
-                expanded: true, // مفتوحة افتراضياً
+                expanded: true,
                 subTasks: []
             };
 
-            todos.unshift(newTask); // إضافة في البداية
+            todos.unshift(newTask);
             input.value = '';
-            saveToLocal();
+            autoSave();
+            render();
         }
 
-        // حذف مهمة رئيسية
+        // تم تعديل دالة الحذف لاستخدام النافذة الجديدة
         function deleteMainTask(id) {
-            if (confirm("هل أنت متأكد من حذف هذه القائمة بالكامل؟")) {
-                todos = todos.filter(t => t.id !== id);
-                saveToLocal();
-            }
+            openConfirmModal(
+                "هل أنت متأكد من حذف هذه القائمة بالكامل؟ سيتم حذف جميع المهام بداخلها.",
+                () => {
+                    // كود الحذف الفعلي
+                    todos = todos.filter(t => t.id !== id);
+                }
+            );
         }
 
-        // تبديل توسيع القائمة (Collapse/Expand)
         function toggleExpand(id) {
             const task = todos.find(t => t.id === id);
             if (task) {
                 task.expanded = !task.expanded;
-                saveToLocal();
+                autoSave();
+                render();
             }
         }
 
-        // إضافة مهمة فرعية
         function addSubTask(parentId) {
             const input = document.getElementById(`sub-input-${parentId}`);
             const text = input.value.trim();
@@ -395,35 +618,37 @@
                     text: text,
                     completed: false
                 });
-                input.value = '';
-                saveToLocal();
+                autoSave();
+                render();
+                setTimeout(() => document.getElementById(`sub-input-${parentId}`).focus(), 50);
             }
         }
 
-        // تبديل حالة المهمة الفرعية (Completed)
         function toggleSubTask(parentId, subId) {
             const task = todos.find(t => t.id === parentId);
             if (task) {
                 const sub = task.subTasks.find(s => s.id === subId);
                 if (sub) {
                     sub.completed = !sub.completed;
-                    saveToLocal();
+                    autoSave();
+                    render();
                 }
             }
         }
 
-        // حذف مهمة فرعية
+        // تم تعديل دالة حذف المهمة الفرعية
         function deleteSubTask(parentId, subId) {
-            if (confirm("حذف هذه المهمة الفرعية؟")) {
-                const task = todos.find(t => t.id === parentId);
-                if (task) {
-                    task.subTasks = task.subTasks.filter(s => s.id !== subId);
-                    saveToLocal();
+            openConfirmModal(
+                "هل تريد حذف هذه المهمة نهائياً؟",
+                () => {
+                    const task = todos.find(t => t.id === parentId);
+                    if (task) {
+                        task.subTasks = task.subTasks.filter(s => s.id !== subId);
+                    }
                 }
-            }
+            );
         }
 
-        // دالة الرسم (Render) - تحويل البيانات إلى HTML
         function render() {
             const container = document.getElementById('tasksContainer');
             const emptyState = document.getElementById('emptyState');
@@ -441,32 +666,43 @@
                 const card = document.createElement('div');
                 card.className = `main-task-card ${mainTask.expanded ? 'expanded' : ''}`;
 
-                // الهيدر (المهمة الرئيسية)
+                const completedCount = mainTask.subTasks.filter(s => s.completed).length;
+                const totalCount = mainTask.subTasks.length;
+
                 let subTasksHTML = '';
-                mainTask.subTasks.forEach(sub => {
-                    subTasksHTML += `
-                    <div class="sub-task-item ${sub.completed ? 'completed' : ''}">
-                        <div class="sub-task-left" onclick="toggleSubTask(${mainTask.id}, ${sub.id})">
-                            <div class="custom-checkbox">${sub.completed ? '✔' : ''}</div>
-                            <span class="sub-task-text">${sub.text}</span>
+                if (totalCount > 0) {
+                    mainTask.subTasks.forEach(sub => {
+                        subTasksHTML += `
+                        <div class="sub-task-item ${sub.completed ? 'completed' : ''}">
+                            <div class="sub-task-left" onclick="toggleSubTask(${mainTask.id}, ${sub.id})">
+                                <div class="custom-checkbox">
+                                    ${sub.completed ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
+                                </div>
+                                <span class="sub-task-text">${sub.text}</span>
+                            </div>
+                            <button class="delete-btn" onclick="deleteSubTask(${mainTask.id}, ${sub.id})">🗑</button>
                         </div>
-                        <button class="delete-btn" style="width:24px; height:24px; font-size:0.8rem; background:transparent; color:#9CA3AF" onclick="deleteSubTask(${mainTask.id}, ${sub.id})">✕</button>
-                    </div>
-                `;
-                });
+                    `;
+                    });
+                } else {
+                    subTasksHTML = '<div style="text-align:center; color:#9ca3af; font-size:0.85rem; padding:10px;">لا توجد مهام فرعية بعد</div>';
+                }
 
                 card.innerHTML = `
                 <div class="main-task-header" onclick="toggleExpand(${mainTask.id})">
-                    <div class="task-title">${mainTask.title} <span style="font-size:0.8rem; color:#9CA3AF; font-weight:normal">(${mainTask.subTasks.length})</span></div>
+                    <div class="task-title">
+                        ${mainTask.title}
+                        <span class="badge">${completedCount}/${totalCount}</span>
+                    </div>
                     <div class="task-actions">
-                        <button class="delete-btn" onclick="event.stopPropagation(); deleteMainTask(${mainTask.id})">🗑</button>
+                        <button class="delete-btn" onclick="event.stopPropagation(); deleteMainTask(${mainTask.id})" title="حذف القائمة">✕</button>
                         <span class="toggle-icon">▼</span>
                     </div>
                 </div>
                 <div class="sub-tasks-area">
                     <div class="sub-tasks-list">${subTasksHTML}</div>
                     <div class="add-sub-form">
-                        <input type="text" id="sub-input-${mainTask.id}" placeholder="إضافة مهمة فرعية..." onkeypress="if(event.key === 'Enter') addSubTask(${mainTask.id})">
+                        <input type="text" id="sub-input-${mainTask.id}" placeholder="أضف مهمة جديدة..." onkeypress="if(event.key === 'Enter') addSubTask(${mainTask.id})">
                         <button class="btn-primary btn-small" onclick="addSubTask(${mainTask.id})">إضافة</button>
                     </div>
                 </div>
@@ -475,7 +711,6 @@
                 container.appendChild(card);
             });
         }
-
         // --- وظائف التصدير والاستيراد (الملفات) ---
 
         // تصدير البيانات إلى ملف JSON
