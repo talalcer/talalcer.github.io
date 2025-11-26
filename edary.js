@@ -130,7 +130,7 @@
             groupId: 1,
             department: "مستشفى مدينة نصر"
         }, {
-            groupId: 1,
+            groupId: 8,
             department: "مستشفى اطفال مصر"
         }, {
             groupId: 2,
@@ -181,7 +181,7 @@
             groupId: 7,
             department: "فرع اسوان شامل"
         }, {
-            groupId: 8,
+            groupId: 1,
             department: "المنطقة الخامسة فرع القاهرة"
         }, {
             groupId: 8,
