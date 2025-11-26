@@ -529,6 +529,7 @@
 
         function autoSave() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+            render();
         }
 
         // --- وظائف النافذة المنبثقة (Modal) ---
@@ -743,13 +744,15 @@
                     if (Array.isArray(loadedTodos)) {
                         if (confirm("سيتم استبدال المهام الحالية بالمهام الموجودة في الملف. هل توافق؟")) {
                             todos = loadedTodos;
-                            saveToLocal();
+                            //saveToLocal();
+                            autoSave()
                             alert("تم استرجاع البيانات بنجاح!");
                         }
                     } else {
                         alert("صيغة الملف غير صحيحة.");
                     }
                 } catch (err) {
+                    alert(err.message)
                     alert("حدث خطأ أثناء قراءة الملف.");
                 }
                 // تفريغ المدخل ليسمح باختيار نفس الملف مرة أخرى إذا لزم الأمر
