@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محلل ميزان المراجعة</title>
+    <link rel="icon" type="image/x-icon" href="https://talalcer.github.io/fuel-img/auditorlogo.ico">
+    <meta name="theme-color" content="#2c3e50">
+    <meta name="description" content="تطبيق لتحليل ميزان المراجعة واكتشاف الأرصدة الشاذة">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <style>
+         :root {
+            --primary-color: #2c3e50;
+            --accent-color: #27ae60;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --border-radius: 15px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            user-select: none;
+            /* حماية إضافية للنصوص */
+        }
+        /* --- Header --- */
+        
+        header {
+            background: linear-gradient(135deg, #fff 0%, #f1f2f6 100%);
+            padding: 20px 5%;
+            border-bottom: 4px solid var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .logo-area,
+        .profile-area {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold-accent);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-img {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--gold-accent);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-img:hover,
+        .profile-img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .app-info {
+            text-align: center;
+        }
+        
+        .app-title {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+        
+        .rights {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-family: monospace;
+        }
+        
+        .visitor-badge {
+            background: var(--primary-color);
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            display: inline-flexbox;
+        }
+        /* --- Main Content --- */
+        
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        
+        .control-panel {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        /* Drop Zone */
+        
+        .drop-zone {
+            border: 3px dashed #bdc3c7;
+            border-radius: var(--border-radius);
+            padding: 50px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            margin-bottom: 25px;
+        }
+        
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--accent-color);
+            background: #eafaf1;
+            transform: scale(1.02);
+        }
+        
+        .drop-icon {
+            font-size: 4rem;
+            color: #95a5a6;
+            margin-bottom: 15px;
+        }
+        
+        .btn-process {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
+        }
+        
+        .btn-process:hover {
+            background-color: #34495e;
+            transform: translateY(-2px);
+        }
+        
+        .btn-process:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        /* Console */
+        
+        .console-container {
+            margin-top: 30px;
+            background: #1e272e;
+            border-radius: 10px;
+            height: 250px;
+            overflow-y: auto;
+            padding: 20px;
+            text-align: right;
+            border: 1px solid #333;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        .log-entry {
+            margin-bottom: 8px;
+            border-bottom: 1px solid #2f3640;
+            padding-bottom: 4px;
+        }
+        
+        .log-time {
+            color: #00d2d3;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        .log-info {
+            color: #f1f2f6;
+        }
+        
+        .log-error {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .log-success {
+            color: #1dd1a1;
+            font-weight: bold;
+        }
+        /* Footer */
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #95a5a6;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo-area">
+            <img src="https://talalcer.github.io/fuel-img/mizan.png" alt="Company Logo" class="logo-img">
+        </div>
+
+        <div class="app-info">
+            <h1 class="app-title">محلل ميزان المراجعة</h1>
+            <div class="rights">الحقوق محفوظة: طلال السريتي | talalcer@gmail.com</div>
+
+        </div>
+
+        <div class="profile-area">
+            <img src="https://talalcer.github.io/fuel-img/talal512.png" alt="Talal Al-Suraiti" class="profile-img">
+        </div>
+    </header>
+
+    <main>
+        <div class="control-panel">
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-icon">📂</div>
+                <h3>اضغط هنا لرفع ملف الميزان (Excel)</h3>
+                <p>أو قم بسحب وإفلات الملف هنا</p>
+                <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;">
+            </div>
+
+            <button id="btnProcess" class="btn-process">بدء التحليل والمعالجة 🚀</button>
+
+            <div class="console-container" id="logConsole">
+                <div class="log-entry"><span class="log-time">[System]</span> بانتظار الملف...</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Designed by Talal Crerity &copy; 2025
+        <div class="visitor-badge" id="visitorCounter">الزوار: ...</div>
+    </footer>
+
+    <script>
+        /**
+         * ==========================================
+         * 1. SYSTEM & SECURITY
+         * ==========================================
+         */
+        class AppSystem {
+            static init() {
+                this.setupSecurity();
+                this.updateVisitorCount();
+            }
+            static setupSecurity() {
+                document.addEventListener('contextmenu', e => e.preventDefault());
+            }
+            static updateVisitorCount() {
+                let count = localStorage.getItem('talal_visitor_count') || 150;
+                localStorage.setItem('talal_visitor_count', ++count);
+                document.getElementById('visitorCounter').innerText = `الزوار: ${count}`;
+            }
+        }
+
+        /**
+         * ==========================================
+         * 2. LOGGER
+         * ==========================================
+         */
+        class Logger {
+            constructor(id) {
+                this.el = document.getElementById(id);
+            }
+            log(msg, type = 'info') {
+                const color = type === 'error' ? '#ff6b6b' : (type === 'success' ? '#1dd1a1' : '#f1f2f6');
+                this.el.innerHTML += `<div style="color:${color}; border-bottom:1px solid #333; padding:5px; margin-bottom:2px;">[${new Date().toLocaleTimeString('ar-EG')}] ${msg}</div>`;
+                this.el.scrollTop = this.el.scrollHeight;
+            }
+        }
+
+        /**
+         * ==========================================
+         * 3. DATA ENGINE (CORE LOGIC)
+         * ==========================================
+         */
+        class DataEngine {
+            constructor(logger) {
+                this.logger = logger;
+            }
+
+            cleanCode(val) {
+                return val ? String(val).trim().slice(-10) : "";
+            }
+            parseNum(val) {
+                return parseFloat(val) || 0;
+            }
+
+            processFile(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const wb = XLSX.read(new Uint8Array(e.target.result), {
+                                type: 'array'
+                            });
+                            const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], {
+                                header: 1
+                            });
+                            resolve(this.analyzeData(rows));
+                        } catch (err) {
+                            reject(err);
+                        }
+                    };
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+
+            analyzeData(rows) {
+                this.logger.log(`جاري تحليل ${rows.length} صف...`);
+
+                // 1. Data Containers (Basic Requirements)
+                const cleanRecords = [];
+                const mainAccounts = [];
+                const subAccounts = [];
+                const abnormalAccounts = [];
+
+                // 2. Data Containers (EAS Financial Statements)
+                // Structure: { code, label, currentVal, prevVal }
+                const incomeStmtData = {
+                    rev: [],
+                    exp: []
+                };
+                const balanceSheetData = {
+                    assetsNonCurr: [],
+                    assetsCurr: [],
+                    equity: [],
+                    liabNonCurr: [],
+                    liabCurr: []
+                };
+
+                // Ratios Helpers
+                let totalCurrentAssets = 0;
+                let totalCurrentLiabs = 0;
+
+                const startIndex = 9;
+                const endIndex = rows.length - 3;
+
+                for (let i = startIndex; i < endIndex; i++) {
+                    const row = rows[i];
+                    if (!row || row.length === 0) continue;
+
+                    // --- Parsing ---
+                    const code = this.cleanCode(row[0]);
+                    const desc = row[1] || "غير محدد";
+                    const debStart = this.parseNum(row[2]);
+                    const credStart = this.parseNum(row[3]);
+                    const debMov = this.parseNum(row[4]);
+                    const credMov = this.parseNum(row[5]);
+                    const debFinal = this.parseNum(row[6]);
+                    const credFinal = this.parseNum(row[7]);
+
+                    // --- Global Filter: Zero Balances ---
+                    // استبعاد الحسابات التي رصيدها النهائي صفر
+                    const netBalance = debFinal - credFinal;
+                    if (Math.abs(netBalance) === 0) continue;
+
+                    // --- Base Record Object ---
+                    const record = {
+                        "الكود": code,
+                        "البيان": desc,
+                        "مدين أول": debStart,
+                        "دائن أول": credStart,
+                        "حركة مدين": debMov,
+                        "حركة دائن": credMov,
+                        "مدين آخر": debFinal,
+                        "دائن آخر": credFinal
+                    };
+
+                    cleanRecords.push(record);
+
+                    // --- Classification: Main vs Sub ---
+                    // Logic: If ends with '00' AND not '000' (simplified logic depending on chart)
+                    // Better Logic: Check if it's a parent account based on user's chart structure.
+                    // Assuming standard: XX00 is Main.
+                    let isMain = false;
+                    if (code.length >= 3 && code.slice(-2) === '00' && code.slice(-3) !== '000') {
+                        isMain = true;
+                        mainAccounts.push(record);
+                    } else if (code.slice(-2) !== '00') {
+                        // Sub Account
+                        subAccounts.push(record);
+
+                        // Accumulate for Ratios (Approximate based on Egyptian Chart)
+                        // 12xx = Current Assets, 22xx/23xx = Current Liabs
+                        if (String(code).startsWith('12')) totalCurrentAssets += (debFinal - credFinal);
+                        if (String(code).startsWith('23') || String(code).startsWith('22')) totalCurrentLiabs += (credFinal - debFinal);
+                    }
+
+                    // --- Abnormal Balances Detection ---
+                    const char1 = String(code).charAt(0);
+                    let isAbnormal = false;
+                    if (char1 === '1' && credFinal > debFinal) isAbnormal = true; // Asset is Credit
+                    else if (char1 === '2' && debFinal > credFinal) isAbnormal = true; // Liability is Debit
+                    else if (char1 === '3' && credFinal > debFinal) isAbnormal = true; // Expense is Credit
+                    else if (char1 === '4' && debFinal > credFinal) isAbnormal = true; // Revenue is Debit
+
+                    if (isAbnormal) abnormalAccounts.push(record);
+
+                    // --- Prepare Data for EAS Reports (Only use Main Accounts or significant Sub Accounts if needed) ---
+                    // We will use the current record regardless if Main or Sub for aggregation, 
+                    // BUT best practice for Summary Reports is to aggregate by Main Categories.
+                    // Here we will use the logic: If it's a Main Account, add to Report Data.
+
+                    if (isMain) {
+                        const char2 = String(code).substring(0, 2);
+                        const char3 = String(code).substring(0, 3);
+                        const netCurr = debFinal - credFinal; // Positive = Debit
+                        const netPrev = debStart - credStart;
+
+                        // 1. Income Statement Items
+                        if (char2 === '41') { // Revenue (Credit nature)
+                            incomeStmtData.rev.push({
+                                label: desc,
+                                val: (credFinal - debFinal),
+                                prev: (credStart - debStart)
+                            });
+                        } else if (char2 === '31') { // Expense (Debit nature)
+                            incomeStmtData.exp.push({
+                                label: desc,
+                                val: (debFinal - credFinal),
+                                prev: (debStart - credStart)
+                            });
+                        }
+
+                        // 2. Balance Sheet Items
+                        else if (char1 === '1') { // Assets
+                            // 11 = Non-Current, 12 = Current
+                            if (char2 === '11') balanceSheetData.assetsNonCurr.push({
+                                label: desc,
+                                val: netCurr,
+                                prev: netPrev
+                            });
+                            else balanceSheetData.assetsCurr.push({
+                                label: desc,
+                                val: netCurr,
+                                prev: netPrev
+                            });
+                        } else if (char1 === '2') { // Equity & Liabilities
+                            // 21 = Equity, 22 = Non-Current Liab, 23 = Current Liab
+                            const valLiab = credFinal - debFinal; // Credit nature positive
+                            const valLiabPrev = credStart - debStart;
+
+                            if (char3 === '211') balanceSheetData.equity.push({
+                                label: desc,
+                                val: valLiab,
+                                prev: valLiabPrev
+                            });
+                            else if (char3 === '212') balanceSheetData.liabNonCurr.push({
+                                label: desc,
+                                val: valLiab,
+                                prev: valLiabPrev
+                            });
+                            else if (char3 === '222') balanceSheetData.liabCurr.push({
+                                label: desc,
+                                val: valLiab,
+                                prev: valLiabPrev
+                            });
+                        }
+                    }
+                }
+
+                // --- Post-Processing: Calculate Totals & Net Profit ---
+
+                // Income Statement Totals
+                const totalRev = incomeStmtData.rev.reduce((sum, item) => sum + item.val, 0);
+                const totalExp = incomeStmtData.exp.reduce((sum, item) => sum + item.val, 0);
+                const netProfit = totalRev - totalExp;
+
+                // Ratios Generation
+                const ratios = [];
+                const workingCap = totalCurrentAssets - totalCurrentLiabs;
+                const currentRatio = totalCurrentLiabs ? (totalCurrentAssets / totalCurrentLiabs).toFixed(2) : 0;
+
+                ratios.push({
+                    "البيان": "إجمالي الأصول المتداولة",
+                    "القيمة": totalCurrentAssets
+                });
+                ratios.push({
+                    "البيان": "إجمالي الالتزامات المتداولة",
+                    "القيمة": totalCurrentLiabs
+                });
+                ratios.push({
+                    "البيان": "رأس المال العامل",
+                    "القيمة": workingCap
+                });
+                ratios.push({
+                    "البيان": "نسبة التداول (السيولة)",
+                    "القيمة": currentRatio
+                });
+
+                this.logger.log("تم استبعاد الأرصدة الصفرية وتجهيز القوائم المالية.", 'success');
+
+                return {
+                    clean: cleanRecords,
+                    main: mainAccounts,
+                    sub: subAccounts,
+                    abnormal: abnormalAccounts,
+                    ratios: ratios,
+                    // Reporting Data
+                    incomeData: incomeStmtData,
+                    bsData: balanceSheetData,
+                    netProfit: netProfit
+                };
+            }
+        }
+
+        /**
+         * ==========================================
+         * 4. EXCEL GENERATOR
+         * ==========================================
+         */
+        class ExcelGenerator {
+            generateWorkbook(dataPack) {
+                const wb = XLSX.utils.book_new();
+                wb.Workbook = {
+                    Views: [{
+                        RTL: true
+                    }]
+                };
+
+                // 1. Basic Sheets (Original Requirements)
+                this.addTableSheet(wb, "ميزان منقح", dataPack.clean);
+                this.addTableSheet(wb, "حسابات رئيسية", dataPack.main);
+                this.addTableSheet(wb, "حسابات فرعية", dataPack.sub);
+                this.addTableSheet(wb, "أرصدة شاذة", dataPack.abnormal);
+                this.addTableSheet(wb, "نسب مالية", dataPack.ratios);
+
+                // 2. EAS Financial Statements (New Requirement)
+                this.generateIncomeStatement(wb, dataPack.incomeData, dataPack.netProfit);
+                this.generateBalanceSheet(wb, dataPack.bsData, dataPack.netProfit);
+
+                // Cash Flow Placeholder
+                this.addTableSheet(wb, "ملاحظات التدفقات", [{
+                    "ملاحظة النظام": "لا تتوفر بيانات تفصيلية كافية (مثل النقدية، الأنشطة التشغيلية والاستثمارية) في ملف الميزان الحالي لإنشاء قائمة تدفقات نقدية دقيقة آلياً. يرجى إعدادها يدوياً بناءً على تحليل الأستاذ العام.",
+                    "ملاحظة": "القائمة قيد التطوير"
+                }]);
+
+                return wb;
+            }
+
+            // Helper for Standard Tables
+            addTableSheet(wb, tname, data) {
+                if (!data || data.length === 0) return;
+                /*
+                const ws = XLSX.utils.json_to_sheet(data);
+                if (!ws['!views']) ws['!views'] = [];
+                ws['!views'].push({
+                    RTL: true
+                });
+                const w = Object.keys(data[0]).map(() => ({
+                    wch: 15
+                }));
+                ws['!cols'] = w;
+                XLSX.utils.book_append_sheet(wb, ws, name);
+                */
+                const ws = XLSX.utils.json_to_sheet(data);
+
+                // إعداد الخلية للعنوان مع تنسيق
+                const titleCell = {
+                    v: `تقرير ${tname}`,
+                    t: 's', // string type باقي التنسيق غير مدعم قي xlsx.js
+                    s: {
+                        font: {
+                            name: 'Arial', // اسم الخط
+                            sz: 14, // حجم الخط - يعمل
+                            bold: true, // عريض - يعمل
+                            italic: false, // مائل
+                            underline: false, // تحته خط
+                            color: {
+                                rgb: "000000"
+                            }, // لون النص
+                            strike: false // مشطوب
+                        },
+                        alignment: {
+                            horizontal: 'center',
+                            vertical: 'center',
+                            wrapText: true
+                        },
+                        fill: {
+                            fgColor: {
+                                rgb: "DDEBF7"
+                            } // لون خلفية (أزرق فاتح)
+                        }
+                    }
+                };
+
+                // الحصول على البيانات كصفوف
+                const worksheetData = XLSX.utils.sheet_to_json(ws, {
+                    header: 1
+                });
+
+                // إضافة 3 صفوف فارغة
+                for (let i = 0; i < 4; i++) {
+                    worksheetData.unshift([]); //? .length || 0).fill(''));
+                }
+
+                // إضافة العنوان في الصف الرابع، العمود الثالث
+                const titleRowIndex = 2; // الصف الرابع (0-based)
+                const titleColIndex = 2; // العمود الثالث (0-based)
+
+                // التأكد من وجود الصف
+                while (worksheetData.length <= titleRowIndex) {
+                    worksheetData.push([]);
+                }
+
+                // التأكد من وجود العدد الكافي من الأعمدة في الصف
+                while (worksheetData[titleRowIndex].length <= titleColIndex) {
+                    worksheetData[titleRowIndex].push('');
+                }
+
+                // تعيين العنوان مع التنسيق
+                worksheetData[titleRowIndex][titleColIndex] = titleCell;
+
+                // إنشاء الورقة الجديدة
+                const newWs = XLSX.utils.aoa_to_sheet(worksheetData);
+
+                // تعيين عرض الأعمدة
+                const maxColumns = Math.max(...worksheetData.map(row => row.length));
+                const colWidths = [];
+                for (let i = 0; i < maxColumns; i++) {
+                    if (i === titleColIndex) {
+                        // جعل عمود العنوان أوسع
+                        colWidths.push({
+                            wch: 25
+                        });
+                    } else {
+                        colWidths.push({
+                            wch: 15
+                        });
+                    }
+                }
+                newWs['!cols'] = colWidths;
+
+                // تطبيق إعدادات العرض RTL
+                if (!newWs['!views']) newWs['!views'] = [];
+                newWs['!views'].push({
+                    RTL: true
+                });
+
+                // دمج الخلايا للعنوان إذا أردت
+                newWs['!merges'] = [{
+                    s: {
+                        r: titleRowIndex,
+                        c: titleColIndex
+                    },
+                    e: {
+                        r: titleRowIndex,
+                        c: titleColIndex + 2
+                    }
+                }];
+
+                // إضافة الورقة إلى المصنف
+                XLSX.utils.book_append_sheet(wb, newWs, tname);
+
+
+
+
+                // اضافاتي 
+
+            }
+
+            // Helper for Income Statement
+            generateIncomeStatement(wb, data, netProfit) {
+                const rows = [];
+                rows.push(["", "", ""]); // Spacer
+                rows.push(["", "", ""]); // Spacer
+                rows.push(["قائمة الدخل ", "", ""]);
+                rows.push(["البيان", "سنة حالية", "سنة مقارنة"]);
+
+                rows.push(["الإيرادات", "", ""]);
+                data.rev.forEach(i => rows.push([i.label, i.val, i.prev]));
+                const totalRev = data.rev.reduce((a, b) => a + b.val, 0);
+                rows.push(["إجمالي الإيرادات", totalRev, ""]);
+
+                rows.push(["", "", ""]); // Spacer
+
+                rows.push(["المصروفات", "", ""]);
+                data.exp.forEach(i => rows.push([i.label, i.val, i.prev]));
+                const totalExp = data.exp.reduce((a, b) => a + b.val, 0);
+                rows.push(["إجمالي المصروفات", totalExp, ""]);
+
+                rows.push(["", "", ""]);
+                rows.push(["صافي ربح / (خسارة) العام", netProfit, ""]);
+
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+                ws['!cols'] = [{
+                    wch: 40
+                }, {
+                    wch: 15
+                }, {
+                    wch: 15
+                }];
+                ws['!views'] = [{
+                    RTL: true
+                }];
+                XLSX.utils.book_append_sheet(wb, ws, "قائمة الدخل");
+            }
+
+            // Helper for Balance Sheet
+            generateBalanceSheet(wb, data, netProfit) {
+                const rows = [];
+                rows.push(["", "", ""]); // Spacer
+                rows.push(["", "", ""]); // Spacer
+                rows.push(["قائمة المركز المالي", "", ""]);
+                rows.push(["البيان", "سنة حالية", "سنة مقارنة"]);
+
+                // --- Assets ---
+                rows.push(["الأصول غير المتداولة", "", ""]);
+                let sumNonCurr = 0,
+                    sumNonCurrPrev = 0;
+                data.assetsNonCurr.forEach(i => {
+                    rows.push([i.label, i.val, i.prev]);
+                    sumNonCurr += i.val;
+                    sumNonCurrPrev += i.prev;
+                });
+                rows.push(["إجمالي الأصول غير المتداولة", sumNonCurr, sumNonCurrPrev]);
+
+                rows.push(["", "", ""]);
+                rows.push(["الأصول المتداولة", "", ""]);
+                let sumCurr = 0,
+                    sumCurrPrev = 0;
+                data.assetsCurr.forEach(i => {
+                    rows.push([i.label, i.val, i.prev]);
+                    sumCurr += i.val;
+                    sumCurrPrev += i.prev;
+                });
+                rows.push(["إجمالي الأصول المتداولة", sumCurr, sumCurrPrev]);
+
+                rows.push(["إجمالي الأصول", sumNonCurr + sumCurr, sumNonCurrPrev + sumCurrPrev]);
+                rows.push(["", "", ""]);
+
+                // --- Equity & Liabilities ---
+                rows.push(["حقوق الملكية", "", ""]);
+                let sumEq = 0,
+                    sumEqPrev = 0;
+                data.equity.forEach(i => {
+                    rows.push([i.label, i.val, i.prev]);
+                    sumEq += i.val;
+                    sumEqPrev += i.prev;
+                });
+                // Add Net Profit
+                rows.push(["صافي ربح العام (من قائمة الدخل)", netProfit, "-"]);
+                sumEq += netProfit;
+                rows.push(["إجمالي حقوق الملكية", sumEq, sumEqPrev]);
+
+                rows.push(["", "", ""]);
+                rows.push(["الالتزامات غير المتداولة", "", ""]);
+                let sumLNC = 0,
+                    sumLNCPrev = 0;
+                data.liabNonCurr.forEach(i => {
+                    rows.push([i.label, i.val, i.prev]);
+                    sumLNC += i.val;
+                    sumLNCPrev += i.prev;
+                });
+                rows.push(["إجمالي الالتزامات غير المتداولة", sumLNC, sumLNCPrev]);
+
+                rows.push(["", "", ""]);
+                rows.push(["الالتزامات المتداولة", "", ""]);
+                let sumLC = 0,
+                    sumLCPrev = 0;
+                data.liabCurr.forEach(i => {
+                    rows.push([i.label, i.val, i.prev]);
+                    sumLC += i.val;
+                    sumLCPrev += i.prev;
+                });
+                rows.push(["إجمالي الالتزامات المتداولة", sumLC, sumLCPrev]);
+
+                rows.push(["إجمالي الحقوق والالتزامات", sumEq + sumLNC + sumLC, sumEqPrev + sumLNCPrev + sumLCPrev]);
+
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+                ws['!cols'] = [{
+                    wch: 40
+                }, {
+                    wch: 15
+                }, {
+                    wch: 15
+                }];
+                ws['!views'] = [{
+                    RTL: true
+                }];
+                XLSX.utils.book_append_sheet(wb, ws, "المركز المالي");
+            }
+
+            saveFile(wb) {
+                XLSX.writeFile(wb, "Financial_Analysis_EAS.xlsx");
+            }
+        }
+
+        /**
+         * ==========================================
+         * 5. MAIN CONTROLLER
+         * ==========================================
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            AppSystem.init();
+            const logger = new Logger('logConsole');
+            const engine = new DataEngine(logger);
+            const excelGen = new ExcelGenerator();
+
+            const fileInput = document.getElementById('fileInput');
+            const btnProcess = document.getElementById('btnProcess');
+            let currentFile = null;
+
+            document.getElementById('dropZone').onclick = () => fileInput.click();
+
+            document.getElementById('dropZone').addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.target.classList.add('dragover');
+            });
+            document.getElementById('dropZone').addEventListener('drop', (e) => {
+                e.preventDefault();
+                e.target.classList.remove('dragover');
+                if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+            });
+
+            fileInput.onchange = (e) => {
+                if (e.target.files[0]) handleFile(e.target.files[0]);
+            };
+
+            function handleFile(file) {
+                currentFile = file;
+                document.querySelector('#dropZone h3').innerText = `الملف: ${file.name}`;
+                logger.log(`تم التقاط الملف: ${file.name}`);
+            }
+
+            btnProcess.onclick = async() => {
+                if (!currentFile) return alert("اختر ملفاً أولاً");
+                btnProcess.innerText = "جاري المعالجة...";
+                btnProcess.disabled = true;
+                try {
+                    const data = await engine.processFile(currentFile);
+                    const wb = excelGen.generateWorkbook(data);
+                    excelGen.saveFile(wb);
+                    logger.log("تم إنشاء جميع القوائم والتحليلات بنجاح! 🎉", 'success');
+                } catch (e) {
+                    logger.log(e.message, 'error');
+                    console.error(e);
+                } finally {
+                    btnProcess.innerText = "بدء التحليل والمعالجة 🚀";
+                    btnProcess.disabled = false;
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>
