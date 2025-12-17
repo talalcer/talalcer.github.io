@@ -1,0 +1,10 @@
+{
+    "folder": "mypo",
+    "extension": ".tec",
+    "links": [
+        { "title": " مراجعة IT System Audit", "file": "https://talalcer.github.io/mypo/itodit" },
+        { "title": " مراجعة العملاء", "file": "https://talalcer.github.io/mypo/accntreciv" },
+        { "title": " مراجعة المخزون", "file": "https://talalcer.github.io/mypo/invent" }
+
+    ]
+}
