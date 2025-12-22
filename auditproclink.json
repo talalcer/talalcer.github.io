@@ -4,11 +4,13 @@
     "links": [
         { "title": " مراجعة IT System Audit", "file": "itodit" },
         { "title": " مراجعة العملاء", "file": "reciv" },
-        { "title": " مراجعة المخزون", "file": "invent" }
+        { "title": " مراجعة المخزون", "file": "invent" },
+        { "title": "اجراءات تحليلية", "file": "analy_proc" }
 
     ]
 
 }
+
 
 
 
