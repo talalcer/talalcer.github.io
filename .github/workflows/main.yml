@@ -1,0 +1,32 @@
+name: Risk Database Manager
+
+on:
+  repository_dispatch:
+    types: [submit-form] # هذا يجب أن يطابق event_type في كود JavaScript
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Add data to RISKDBASE.JSON
+        run: |
+          # 1. التأكد من وجود الملف، إذا لم يوجد ننشئ مصفوفة فارغة
+          if [ ! -f RISKDBASE.JSON ]; then
+            echo "[]" > RISKDBASE.JSON
+          fi
+
+          # 2. إضافة البيانات المستلمة من النموذج إلى الملف
+          # نستخدم jq لإضافة العنصر الجديد للمصفوفة
+          NEW_RECORD='${{ toJson(github.event.client_payload) }}'
+          jq ". += [$NEW_RECORD]" RISKDBASE.JSON > tmp.json && mv tmp.json RISKDBASE.JSON
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "RiskBot"
+          git config --global user.email "talalcer@github.com"
+          git add RISKDBASE.JSON
+          git commit -m "إضافة سجل خطر جديد تلقائياً"
+          git push
