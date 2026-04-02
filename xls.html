@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دورة الاكسيل - طلال السريتي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --primary-color: #1a5276;
+            --accent-color: #d4af37;
+            --sidebar-bg: #f8f9fa;
+            --text-main: #2c3e50;
+            --white: #ffffff;
+            --transition: all 0.3s ease;
+        }
+        /* كلاس الحماية والتحكم */
+        
+        .protected-mode {
+            user-select: none !important;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: #e9ecef;
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        /* الهيدر (Header) */
+        
+        header {
+            background: var(--white);
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+        
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--primary-color);
+            transition: var(--transition);
+            background: #fff;
+        }
+        
+        .logo-box:hover {
+            transform: scale(1.1);
+            border-color: var(--accent-color);
+        }
+        
+        .logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .header-center {
+            text-align: center;
+        }
+        
+        .header-center h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header-center p {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+        /* الجسم الرئيسي (Main Container) */
+        
+        .main-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        /* الشريط الجانبي (15%) */
+        
+        aside {
+            width: 15%;
+            background: var(--sidebar-bg);
+            border-left: 1px solid #dee2e6;
+            overflow-y: auto;
+            padding: 15px 10px;
+        }
+        
+        .category {
+            margin-bottom: 10px;
+        }
+        
+        .category-btn {
+            width: 100%;
+            background: var(--white);
+            border: 1px solid #dcdde1;
+            padding: 12px;
+            text-align: right;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+        
+        .category-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .category-btn::after {
+            content: '▾';
+            font-size: 12px;
+        }
+        
+        .items-list {
+            display: none;
+            padding: 5px 10px;
+            background: #fff;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #eee;
+            margin-top: -2px;
+        }
+        
+        .item-link {
+            display: block;
+            padding: 8px 5px;
+            color: #555;
+            text-decoration: none;
+            font-size: 13px;
+            border-bottom: 1px solid #f1f1f1;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .item-link:hover {
+            color: var(--accent-color);
+            padding-right: 10px;
+        }
+        /* منطقة العرض (85%) */
+        
+        main {
+            width: 85%;
+            background: #525659;
+            /* لون خلفية القارئ الافتراضية */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        #pdfViewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .placeholder-text {
+            color: white;
+            text-align: center;
+        }
+        /* تخصيص التمرير */
+        
+         ::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+         ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+
+<body class="protected-mode">
+
+    <header>
+        <div class="logo-box">
+            <img src="https://talalcer.github.io/fuel-img/mizan.png" alt="Company Logo">
+        </div>
+
+        <div class="header-center">
+            <h1>دورة الاكسيل</h1>
+            <p>الحقوق محفوظة طلال السريتي | Talal Cerity</p>
+        </div>
+
+        <div class="logo-box">
+            <img src="https://talalcer.github.io/fuel-img/talal512.png" alt="Personal Photo">
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside id="sidebar">
+        </aside>
+
+        <main id="mainDisplay">
+            <div class="placeholder-text" id="placeholder">
+                <h3>يرجى اختيار موضوع من القائمة الجانبية للعرض</h3>
+            </div>
+            <iframe id="pdfViewer" style="display: none;"></iframe>
+        </main>
+    </div>
+
+    <script>
+        // --- 1. نظام الحماية ---
+        const initSecurity = () => {
+            const body = document.body;
+            if (body.classList.contains('protected-mode')) {
+                // منع القائمة اليمنى
+                document.addEventListener('contextmenu', e => e.preventDefault());
+
+                // منع الاختصارات F12, Ctrl+U, Ctrl+Shift+I
+                document.addEventListener('keydown', e => {
+                    if (e.keyCode == 123 ||
+                        (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) ||
+                        (e.ctrlKey && e.keyCode == 85)) {
+                        e.preventDefault();
+                    }
+                });
+
+                // منع النسخ
+                document.addEventListener('copy', e => e.preventDefault());
+            }
+        };
+
+        // --- 2. إدارة البيانات والعرض ---
+        async function loadContent() {
+            try {
+                // ملاحظة: استبدل 'intosai.json' بمسار ملفك الحقيقي
+                const response = await fetch('https://talalcer.github.io/myset/xls.json');
+                //const response = await fetch('D:\hp laptop\WaqodAnalys\miracle\intosai.json');
+                const data = await response.json();
+                const sidebar = document.getElementById('sidebar');
+
+                data.groups.forEach((group, index) => {
+                            const groupDiv = document.createElement('div');
+                            groupDiv.className = 'category';
+
+                            groupDiv.innerHTML = `
+                        <button class="category-btn" onclick="toggleGroup(${index})">
+                            ${group.groupName}
+                        </button>
+                        <div class="items-list" id="group-${index}">
+                            ${group.topics.map(topic => `
+                                <div class="item-link" onclick="viewPdf('${topic.url}')">
+                                    ${topic.title}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    sidebar.appendChild(groupDiv);
+                });
+            } catch (error) {
+                console.error("خطأ في تحميل البيانات:", error);
+                // بيانات تجريبية في حال لم يجد ملف JSON
+                showDemoData();
+            }
+        }
+
+        function toggleGroup(index) {
+            const list = document.getElementById(`group-${index}`);
+            const isVisible = list.style.display === 'block';
+            
+            // إغلاق الكل أولاً (اختياري)
+            document.querySelectorAll('.items-list').forEach(el => el.style.display = 'none');
+            
+            list.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function viewPdf(url) {
+            const viewer = document.getElementById('pdfViewer');
+            const placeholder = document.getElementById('placeholder');
+            
+            placeholder.style.display = 'none';
+            viewer.style.display = 'block';
+            viewer.src = url;
+        }
+
+        // بيانات تجريبية (Demo) للتوضيح
+        function showDemoData() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.innerHTML = '<p style="font-size:12px; color:red; text-align:center;">عرض تجريبي: لم يتم العثور على المجموعات</p>';
+            // يمكنك إضافة حلقات تكرار هنا لبيانات وهمية
+        }
+
+        // التشغيل عند التحميل
+        initSecurity();
+        loadContent();
+    </script>
+</body>
+
+</html>
