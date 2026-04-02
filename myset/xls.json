@@ -2,11 +2,13 @@
     "groups": [{
             "groupName": "كتب",
             "topics": [
+                { "title": "دورة الاكسيل طلال السريتي1", "url": "https://docs.google.com/presentation/d/1hwpDho_-JLbQNvI8z3e82tHmSPOR0t71/preview" },
+                { "title": "دورة الاكسيل طلال السريتي2", "url": "https://drive.google.com/file/d/1CZC1buQFgT2ozET4LfPA_1efICb8rLdt/preview" },
+                { "title": "دليل الاكسيل طلال السريتي3", "url": "https://drive.google.com/file/d/1jrq2qllIot9M2VAjr_309dj14bW46Sr-/preview" },
+                { "title": "الفرز والتصفية طلال السريتي", "url": "https://drive.google.com/file/d/15xHG3XxhVolYd_bwiU0rYdUUO6TRAH2f/preview" },
                 { "title": "تعلم اكسيل من الصفر", "url": "https://drive.google.com/file/d/1L-R48r6dHO1IVjUqzoD8hKIIqLdm7OGb/preview" },
-                { "title": "تعلم اكسيل بالعربي", "url": "https://drive.google.com/file/d/1LTYJgsDdhLO20qPi_BNumqHDdBzIpXi7/preview" },
-                { "title": "الفرز والتصفية", "url": "https://docs.google.com/presentation/d/1sVLrP5X_kJhjyahGbIKSY8EOacNHhBf1/preview" },
-                { "title": "الدوال في الاكسيل", "url": "https://docs.google.com/presentation/d/1hwpDho_-JLbQNvI8z3e82tHmSPOR0t71/preview" },
-                { "title": "الجداول المحورية", "url": "https://docs.google.com/presentation/d/1hwpDho_-JLbQNvI8z3e82tHmSPOR0t71/edit?usp=sharing&ouid=117168527510108209711&rtpof=true&sd=true" }
+                { "title": "تعلم اكسيل بالعربي", "url": "https://drive.google.com/file/d/1LTYJgsDdhLO20qPi_BNumqHDdBzIpXi7/preview" }
+
             ]
         },
         {
