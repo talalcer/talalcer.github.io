@@ -1,0 +1,17 @@
+{
+    "groups": [{
+            "groupName": "كتب",
+            "topics": [
+                { "title": "اعلان ليما", "url": "https://drive.google.com/file/d/1uPQhcAJdbQAF5CnnW5J3Wre5qtg6ZBVZ/preview" },
+                { "title": "روابط هامة", "url": "https://drive.google.com/file/d/1kPUq8Rwx9S_KAOyzOSj_4aHV0V8fABrn/preview" }
+            ]
+        },
+        {
+            "groupName": "روابط",
+            "topics": [
+                { "title": "كورس متكامل لتعلم الاكسيل", "url": "https://www.youtube.com/playlist?list=PL0GI80IZKLKmPdrWYsw-YeY6JhZb6iGWV" },
+                { "title": "تعلم اكسيل من الصفر", "url": "https://www.youtube.com/playlist?list=PLHEPOEqjBpoXTLxPvUBbiTtgPKZLM0UdI" }
+            ]
+        }
+    ]
+}
