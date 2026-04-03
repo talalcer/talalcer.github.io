@@ -12,9 +12,15 @@
             ]
         },
         {
-            "groupName": "روابط",
+            "groupName": "فيديوهات تعليمية",
             "topics": [
                 { "title": "كورسات تعلم الاكسيل", "url": "https://drive.google.com/file/d/10zRZ_5IlWaVx3f8ZOyJBscSNVWPVDxLp/preview" }
+            ]
+        },
+        {
+            "groupName": "معادلات هامة",
+            "topics": [
+                { "title": "شرح الاكسيل طلال السريتي", "url": "https://drive.google.com/file/d/1dJTuJ1hECFU08SbdHP7dD6LewoKs2iK7/preview" }
             ]
         }
     ]
