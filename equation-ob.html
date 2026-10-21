@@ -4,164 +4,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>معادلات هامة في الاكسيل</title>
 
-    <title>Docs UI</title>
-
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- خط Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            min-height: 100vh;
         }
         
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 20px;
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            border-color: rgba(99, 102, 241, 0.4);
         }
         
         .code-box {
-            background: #020617;
-            color: #22c55e;
-            font-family: monospace;
+            background: #0b1120;
+            color: #38bdf8;
+            /* لون أزرق سماوي مريح للعين */
+            font-family: 'Consolas', 'Courier New', monospace;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
         }
         
         .copy-btn {
-            transition: 0.3s;
+            transition: all 0.2s ease;
+            opacity: 0.8;
         }
         
         .copy-btn:hover {
+            opacity: 1;
             transform: scale(1.05);
         }
+        /* تخصيص شريط التمرير */
+        
+         ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+         ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        
+         ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
     </style>
-
 </head>
 
-<body class="text-white p-6 max-w-5xl mx-auto">
+<body class="text-slate-200 p-4 md:p-8 max-w-4xl mx-auto">
 
-    <h1 class="text-3xl mb-8 text-center font-bold">📘 معادلات هامة</h1>
-    <h2 class="text-1xl mb-1 text-center font-bold">جميع الحقوق محفوظة طلال السريتي</h2>
+    <!-- الترويسة -->
+    <header class="text-center mb-12">
+        <h1 class="text-3xl md:text-4xl mb-4 font-bold text-white tracking-wide">
+            📘 معادلات Excel الهامة
+        </h1>
+        <p class="text-sm text-indigo-300 font-semibold tracking-wider">
+            جميع الحقوق محفوظة طلال السريتي
+        </p>
+    </header>
 
-    <!-- ================= SECTION 1 ================= -->
-    <div class="card mb-6">
+    <div class="space-y-6">
 
-        <!-- <h2 class="text-xl mb-3 text-indigo-400">📌 مثال 1</h2> -->
-
-        <div class="mb-4 leading-relaxed text-gray-300">
-            هذه المعادلة تستخرج جنس الشخص بناءً على الرقم القومي الموجود في الخلية D7. إذا كان الرقم القومي يحتوي على رقم زوجي في الموقع المحدد، فإن النتيجة ستكون "أنثى"، وإذا كان يحتوي على رقم فردي، فإن النتيجة ستكون "ذكر".
-
-            <div class="relative">
-                <pre id="code1" class="code-box p-4 rounded-xl overflow-x-auto" dir="ltr">
-=IF(MOD(MID(D7,LEN(D7)-1,1),2)=0,"أنثى","ذكر")        
-</pre>
-
-                <button onclick="copyCode('code1', this)" class="copy-btn absolute top-2 right-2 bg-indigo-600 px-3 py-1 rounded text-sm">
-            نسخ
-        </button>
+        <!-- ================= SECTION 1: استخراج الجنس ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-indigo-500/20 text-indigo-400 p-1.5 rounded-lg text-sm">1</span> استخراج الجنس من الرقم القومي
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                هذه المعادلة تستخرج جنس الشخص بناءً على الرقم القومي الموجود في الخلية <code>D7</code>. الرقم قبل الأخير في الرقم القومي يحدد الجنس (فردي = ذكر، زوجي = أنثى).
+            </p>
+            <div class="relative group">
+                <pre id="code1" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=IF(MOD(MID(D7,LEN(D7)-1,1),2)=0,"أنثى","ذكر")</pre>
+                <button onclick="copyCode('code1', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
             </div>
-
         </div>
 
-        <!-- ================= SECTION 2 ================= -->
-        <div class="card mb-6">
+        <!-- ================= SECTION 2: استخراج تاريخ الميلاد ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-indigo-500/20 text-indigo-400 p-1.5 rounded-lg text-sm">2</span> استخراج تاريخ الميلاد
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                تُنشئ تاريخ ميلاد الشخص بناءً على الرقم القومي في الخلية <code>D7</code>. إذا بدأ الرقم بـ 2 يكون القرن الماضي (1900)، وإذا بدأ بـ 3 يكون الحالي (2000).
+            </p>
+            <div class="relative group">
+                <pre id="code2" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=DATE(IF(LEFT(D7,1)="2",1900,2000)+MID(D7,2,2),MID(D7,4,2),MID(D7,6,2))</pre>
+                <button onclick="copyCode('code2', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
+            </div>
+        </div>
 
-            <!-- <h2 class="text-xl mb-3 text-indigo-400">📌 مثال 2</h2> -->
+        <!-- ================= SECTION 3: التحقق من القرن (التنسيق الشرطي) ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-indigo-500/20 text-indigo-400 p-1.5 rounded-lg text-sm">3</span> التحقق من قرن الميلاد
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                معادلة للتحقق من صحة القرن. تنتج <code>1</code> إذا كان صحيحاً و <code>0</code> إذا كان خاطئاً. تُستخدم مع **التنسيق الشرطي (Conditional Formatting)** واختيار أيقونات ✔ و ✖ لاستبدال الـ 1 والـ 0.
+            </p>
+            <div class="relative group">
+                <pre id="code3" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=--OR(LEFT(G2,1)="2",LEFT(G2,1)="3",LEFT(G2,1)="9")</pre>
+                <button onclick="copyCode('code3', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
+            </div>
+        </div>
 
-            <div class="mb-4 leading-relaxed text-gray-300">
-                هذه المعادلة تُنشئ تاريخً ميلاد الشخص بناءً على الرقم القومي الموجود في الخلية D7.
+        <!-- ================= SECTION 4: التحقق من الشهر ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-indigo-500/20 text-indigo-400 p-1.5 rounded-lg text-sm">4</span> التحقق من شهر الميلاد
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                تتحقق من أن الشهر يقع بين 1 و 12. تنتج <code>1</code> للصحيح و <code>0</code> للخطأ، لتُستخدم بنفس طريقة المثال السابق مع أيقونات التنسيق الشرطي.
+            </p>
+            <div class="relative group">
+                <pre id="code4" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=--AND(VALUE(MID(E2,4,2))>=1,VALUE(MID(E2,4,2))<=12)</pre>
+                <button onclick="copyCode('code4', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
+            </div>
+        </div>
 
-                <div class="relative">
-                    <pre id="code2" class="code-box p-4 rounded-xl overflow-x-auto" dir="ltr">
-=DATE(IF(LEFT(D7,1)="2",1900,2000)+MID(D7,2,2),MID(D7,4,2),MID(D7,6,2))
-        </pre>
+        <!-- ================= SECTION 5: البحث المتقدم XLOOKUP ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-emerald-500/20 text-emerald-400 p-1.5 rounded-lg text-sm">5</span> الدالة الأقوى للبحث (XLOOKUP)
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                تغني عن <code>VLOOKUP</code> و <code>INDEX/MATCH</code>. تبحث عن قيمة في عمود وتُرجع النتيجة من أي عمود آخر (حتى لو كان على اليسار)، مع إمكانية إرجاع قيمة افتراضية في حال عدم وجودها.
+            </p>
+            <div class="relative group">
+                <pre id="code5" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=XLOOKUP(A2, Data[ID], Data[Name], "غير موجود")</pre>
+                <button onclick="copyCode('code5', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
+            </div>
+        </div>
 
-                    <button onclick="copyCode('code2', this)" class="copy-btn absolute top-2 right-2 bg-indigo-600 px-3 py-1 rounded text-sm">
-            نسخ
-        </button>
-                </div>
-                <!-- ================= SECTION 3 ================= -->
-                <div class="card mb-6">
+        <!-- ================= SECTION 6: فلترة البيانات FILTER ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-emerald-500/20 text-emerald-400 p-1.5 rounded-lg text-sm">6</span> الفلترة الديناميكية (FILTER)
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                تستخرج بيانات بناءً على شرط معين وتتحدث تلقائياً. هذه المعادلة تُرجع كل الصفوف التي ينتمي فيها القسم إلى "المبيعات".
+            </p>
+            <div class="relative group">
+                <pre id="code6" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=FILTER(A2:D100, C2:C100="المبيعات", "لا توجد نتائج")</pre>
+                <button onclick="copyCode('code6', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
+            </div>
+        </div>
 
-                    <!-- <h2 class="text-xl mb-3 text-indigo-400">📌 مثال 1</h2> -->
+        <!-- ================= SECTION 7: تقسيم النصوص TEXTSPLIT ================= -->
+        <div class="glass-card rounded-2xl p-5 md:p-6">
+            <h2 class="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <span class="bg-emerald-500/20 text-emerald-400 p-1.5 rounded-lg text-sm">7</span> تقسيم النصوص بذكاء (TEXTSPLIT)
+            </h2>
+            <p class="mb-4 leading-relaxed text-slate-300 text-sm md:text-base">
+                تقوم بفصل النص الموجود في خلية واحدة إلى عدة خلايا بناءً على فاصل معين (مثل المسافة أو الفاصلة). هنا نفصل الاسم الثلاثي في خلية <code>A2</code> إلى 3 خلايا.
+            </p>
+            <div class="relative group">
+                <pre id="code7" class="code-box p-4 rounded-xl overflow-x-auto text-sm" dir="ltr">=TEXTSPLIT(A2, " ")</pre>
+                <button onclick="copyCode('code7', this)" class="copy-btn absolute top-3 right-3 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-lg">
+                    نسخ
+                </button>
+            </div>
+        </div>
 
-                    <div class="mb-4 leading-relaxed text-gray-300">
-                        معادلة التحقق من قرن الميلاد بالتنسيق الشرطي ستنتج المعادلة 1 في حالة صحتها أو 0 في حالة الخطأ ثم يتم استخدام التنسيق الشرطي على كامل العمود واختيار IconSetsثم اختيار علامتي(2714) ✔ ✖ لاستبدال ال 1 بعلامة ✔ وال0 بعلامة ✖
+    </div>
 
-                        <div class="relative">
-                            <pre id="code3" class="code-box p-4 rounded-xl overflow-x-auto" dir="ltr">
-=--OR(LEFT(G2,1)="2",LEFT(G2,1)="3",LEFT(G2,1)="9")   
-</pre>
+    <!-- ================= SCRIPT ================= -->
+    <script>
+        function _0x4346() {
+            const _0x285821 = ['catch', '1074504IRQrkI', '9626110KRgEMz', 'classList', 'then', '650820GIUQXN', 'clipboard', 'error', 'className', 'innerText', '28336TQdZYy', 'bg-indigo-600', 'trim', 'bg-emerald-600', '4fxQoHU', '❌\x20فشل', '✅\x20تم\x20النسخ', '103849HCrlNu', '2424318NpQYNn', '42bHKogz', '20iDJSxk', 'فشل\x20النسخ:\x20', '7110882mOBPyi'];
+            _0x4346 = function() {
+                return _0x285821;
+            };
+            return _0x4346();
+        }
 
-                            <button onclick="copyCode('code3', this)" class="copy-btn absolute top-2 right-2 bg-indigo-600 px-3 py-1 rounded text-sm">
-            نسخ
-        </button>
-                        </div>
+        function _0x299a(_0xf5b8c2, _0x178146) {
+            _0xf5b8c2 = _0xf5b8c2 - 0x186;
+            const _0x434647 = _0x4346();
+            let _0x299af4 = _0x434647[_0xf5b8c2];
+            return _0x299af4;
+        }(function(_0x1e66cc, _0x3345b0) {
+            const _0x13bbb5 = _0x299a,
+                _0x59844f = _0x1e66cc();
+            while (!![]) {
+                try {
+                    const _0x47d84e = parseInt(_0x13bbb5(0x191)) / 0x1 * (-parseInt(_0x13bbb5(0x18e)) / 0x2) + parseInt(_0x13bbb5(0x198)) / 0x3 + parseInt(_0x13bbb5(0x19c)) / 0x4 * (parseInt(_0x13bbb5(0x194)) / 0x5) + -parseInt(_0x13bbb5(0x192)) / 0x6 + parseInt(_0x13bbb5(0x193)) / 0x7 * (parseInt(_0x13bbb5(0x18a)) / 0x8) + -parseInt(_0x13bbb5(0x196)) / 0x9 + parseInt(_0x13bbb5(0x199)) / 0xa;
+                    if (_0x47d84e === _0x3345b0) break;
+                    else _0x59844f['push'](_0x59844f['shift']());
+                } catch (_0x18fbad) {
+                    _0x59844f['push'](_0x59844f['shift']());
+                }
+            }
+        }(_0x4346, 0x9049a));
 
-                    </div>
-                    <!-- ================= SECTION 4 ================= -->
-                    <div class="card mb-6">
-
-                        <!-- <h2 class="text-xl mb-3 text-indigo-400">📌 مثال 1</h2> -->
-
-                        <div class="mb-4 leading-relaxed text-gray-300">
-                            معادلة التحقق من شهر الميلاد بالتنسيق الشرطي ستنتج المعادلة 1 في حالة صحتها أو 0 في حالة الخطأ ثم يتم استخدام التنسيق الشرطي على كامل العمود واختيار IconSetsثم اختيار علامتي(2714) ✔ ✖ لاستبدال ال 1 بعلامة ✔ وال0 بعلامة ✖
-                            <div class="relative">
-                                <pre id="code4" class="code-box p-4 rounded-xl overflow-x-auto" dir="ltr">
-=--AND(VALUE(MID(E2,4,2))>=1,VALUE(MID(E2,4,2))<=12)      
-</pre>
-
-                                <button onclick="copyCode('code4', this)" class="copy-btn absolute top-2 right-2 bg-indigo-600 px-3 py-1 rounded text-sm">
-            نسخ
-        </button>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <script>
-                        (function(_0xcf0ff4, _0x232661) {
-                            const _0x4a8cde = _0x1972,
-                                _0x170b5c = _0xcf0ff4();
-                            while (!![]) {
-                                try {
-                                    const _0x20be71 = -parseInt(_0x4a8cde(0x12a)) / 0x1 + -parseInt(_0x4a8cde(0x133)) / 0x2 * (-parseInt(_0x4a8cde(0x135)) / 0x3) + -parseInt(_0x4a8cde(0x134)) / 0x4 * (-parseInt(_0x4a8cde(0x137)) / 0x5) + -parseInt(_0x4a8cde(0x138)) / 0x6 + -parseInt(_0x4a8cde(0x12f)) / 0x7 + -parseInt(_0x4a8cde(0x129)) / 0x8 * (-parseInt(_0x4a8cde(0x12b)) / 0x9) + parseInt(_0x4a8cde(0x12d)) / 0xa;
-                                    if (_0x20be71 === _0x232661) break;
-                                    else _0x170b5c['push'](_0x170b5c['shift']());
-                                } catch (_0x5d18c4) {
-                                    _0x170b5c['push'](_0x170b5c['shift']());
-                                }
-                            }
-                        }(_0x3836, 0x3c332));
-
-                        function _0x3836() {
-                            const _0x1af9f2 = ['innerText', '2156665eJNGUY', 'then', 'clipboard', 'نسخ', '46ymxjtF', '154852HMpTZt', '50739raEuZQ', 'getElementById', '35BxTsfh', '5328QwhUhn', '296BIJzSn', '473292YenfZp', '67707dnRTXI', 'writeText', '905120JAQpIx'];
-                            _0x3836 = function() {
-                                return _0x1af9f2;
-                            };
-                            return _0x3836();
-                        }
-
-                        function _0x1972(_0x241694, _0x4228f7) {
-                            _0x241694 = _0x241694 - 0x129;
-                            const _0x3836fd = _0x3836();
-                            let _0x197288 = _0x3836fd[_0x241694];
-                            return _0x197288;
-                        }
-
-                        function copyCode(_0x4346cb, _0x3297cc) {
-                            const _0x40b956 = _0x1972,
-                                _0x42569b = document[_0x40b956(0x136)](_0x4346cb)[_0x40b956(0x12e)];
-                            navigator[_0x40b956(0x131)][_0x40b956(0x12c)](_0x42569b)[_0x40b956(0x130)](() => {
-                                const _0x462728 = _0x40b956;
-                                _0x3297cc[_0x462728(0x12e)] = '✅\x20تم\x20النسخ', setTimeout(() => {
-                                    const _0x9dcd39 = _0x462728;
-                                    _0x3297cc[_0x9dcd39(0x12e)] = _0x9dcd39(0x132);
-                                }, 0x5dc);
-                            });
-                        }
-                    </script>
+        function copyCode(_0x52aa54, _0x488148) {
+            const _0x45023f = _0x299a,
+                _0x5b4037 = document['getElementById'](_0x52aa54)[_0x45023f(0x189)][_0x45023f(0x18c)]();
+            navigator[_0x45023f(0x186)]['writeText'](_0x5b4037)[_0x45023f(0x19b)](() => {
+                const _0x313f42 = _0x45023f,
+                    _0x9a5c83 = _0x488148[_0x313f42(0x189)],
+                    _0x2d9003 = _0x488148['className'];
+                _0x488148['innerText'] = _0x313f42(0x190), _0x488148[_0x313f42(0x19a)]['replace'](_0x313f42(0x18b), _0x313f42(0x18d)), setTimeout(() => {
+                    const _0x536c47 = _0x313f42;
+                    _0x488148[_0x536c47(0x189)] = _0x9a5c83, _0x488148[_0x536c47(0x188)] = _0x2d9003;
+                }, 0x7d0);
+            })[_0x45023f(0x197)](_0x5aca10 => {
+                const _0x54cf59 = _0x45023f;
+                console[_0x54cf59(0x187)](_0x54cf59(0x195), _0x5aca10), _0x488148[_0x54cf59(0x189)] = _0x54cf59(0x18f);
+            });
+        }
+    </script>
 
 </body>
 
