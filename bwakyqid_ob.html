@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>استخراج جداول PDF إلى Excel</title>
+
+    <style>
+      :root {
+        --bg: #eef2f7;
+        --card: #ffffff;
+        --line: #dbe3ee;
+        --txt: #0f172a;
+        --mut: #64748b;
+        --blue: #2563eb;
+        --blue2: #1d4ed8;
+        --green: #059669;
+        --red: #dc2626;
+        --amber: #b45309;
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Segoe UI",
+          "Tahoma",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: var(--bg);
+        color: var(--txt);
+        line-height: 1.65;
+      }
+
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 26px 16px 70px;
+      }
+
+      header h1 {
+        font-size: 1.45rem;
+        margin: 0 0 6px;
+        letter-spacing: -0.2px;
+      }
+
+      header p {
+        margin: 0;
+        color: var(--mut);
+        font-size: 0.93rem;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: 18px;
+        margin-top: 18px;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+      }
+
+      .card h2 {
+        font-size: 1.02rem;
+        margin: 0 0 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .drop {
+        border: 2px dashed #c7d3e3;
+        border-radius: 12px;
+        padding: 26px 16px;
+        text-align: center;
+        background: #f8fafc;
+        transition: 0.18s;
+        cursor: pointer;
+      }
+
+      .drop:hover {
+        border-color: var(--blue);
+        background: #f0f6ff;
+      }
+
+      .drop.over {
+        border-color: var(--blue);
+        background: #e8f1ff;
+        transform: scale(1.005);
+      }
+
+      .drop .big {
+        font-size: 2.1rem;
+        line-height: 1;
+      }
+
+      .drop p {
+        margin: 8px 0 0;
+        color: var(--mut);
+        font-size: 0.92rem;
+      }
+
+      .file-info {
+        margin-top: 12px;
+        font-size: 0.9rem;
+        color: var(--green);
+        font-weight: 600;
+        display: none;
+      }
+
+      .file-info.show {
+        display: block;
+      }
+
+      button {
+        font-family: inherit;
+        font-size: 0.92rem;
+        font-weight: 600;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 10px 18px;
+        cursor: pointer;
+        transition: 0.16s;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .btn-primary {
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--blue2);
+      }
+
+      .btn-green {
+        background: var(--green);
+        color: #fff;
+      }
+
+      .btn-green:hover:not(:disabled) {
+        background: #047857;
+      }
+
+      .btn-ghost {
+        background: #fff;
+        border-color: var(--line);
+        color: var(--txt);
+      }
+
+      .btn-ghost:hover:not(:disabled) {
+        background: #f1f5f9;
+      }
+
+      .btn-sm {
+        padding: 7px 13px;
+        font-size: 0.85rem;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+        align-items: center;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 14px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .field input[type="number"],
+      .field input[type="text"],
+      .field select {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        background: #fff;
+        color: var(--txt);
+      }
+
+      .field input[type="text"] {
+        text-align: left;
+        direction: ltr;
+        font-family: "Consolas", monospace;
+      }
+
+      .field small {
+        color: var(--mut);
+        font-size: 0.76rem;
+        display: block;
+        margin-top: 4px;
+      }
+
+      .checks {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 14px;
+      }
+
+      .check {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.88rem;
+        cursor: pointer;
+      }
+
+      .check input {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--blue);
+        cursor: pointer;
+      }
+
+      .section-title {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--mut);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 18px 0 8px;
+        padding-bottom: 6px;
+        border-bottom: 1px dashed var(--line);
+      }
+
+      .note {
+        margin-top: 12px;
+        padding: 10px 13px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        color: #9a3412;
+        line-height: 1.6;
+      }
+
+      .note b {
+        color: #7c2d12;
+      }
+
+      .note.blue {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+        color: #1e40af;
+      }
+
+      .note.blue b {
+        color: #1e3a8a;
+      }
+
+      .note.green {
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+        color: #047857;
+      }
+
+      .note.green b {
+        color: #065f46;
+      }
+
+      .note.purple {
+        background: #faf5ff;
+        border-color: #e9d5ff;
+        color: #6b21a8;
+      }
+
+      .note.purple b {
+        color: #581c87;
+      }
+      /* Prefix rules */
+
+      .prefix-rule {
+        display: grid;
+        grid-template-columns: 60px 1fr 40px;
+        gap: 8px;
+        align-items: center;
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        margin-bottom: 8px;
+      }
+
+      .prefix-rule input[type="number"] {
+        padding: 6px 8px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        font-size: 0.88rem;
+        text-align: center;
+        width: 100%;
+      }
+
+      .prefix-rule input[type="text"] {
+        padding: 6px 8px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        font-size: 0.88rem;
+        font-family: "Consolas", monospace;
+        direction: ltr;
+        text-align: left;
+        width: 100%;
+      }
+
+      .prefix-rule .del-btn {
+        background: transparent;
+        border: none;
+        color: #cbd5e1;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 0;
+        font-weight: 400;
+        border-radius: 0;
+        transition: 0.15s;
+        height: 100%;
+      }
+
+      .prefix-rule .del-btn:hover {
+        background: #fef2f2;
+        color: var(--red);
+      }
+      /* قاموس الاستبدال */
+
+      .dict-table {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 12px;
+      }
+
+      .dict-header,
+      .dict-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 44px;
+      }
+
+      .dict-header > div {
+        padding: 9px 12px;
+        background: #f8fafc;
+        font-weight: 700;
+        font-size: 0.85rem;
+        border-bottom: 1px solid var(--line);
+        color: var(--mut);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+
+      .dict-header > div:first-child {
+        color: var(--red);
+      }
+
+      .dict-header > div:nth-child(2) {
+        color: var(--green);
+      }
+
+      .dict-row {
+        border-bottom: 1px solid var(--line);
+      }
+
+      .dict-row:last-child {
+        border-bottom: none;
+      }
+
+      .dict-row > input {
+        width: 100%;
+        border: none;
+        font-family: inherit;
+        font-size: 0.92rem;
+        padding: 9px 12px;
+        background: transparent;
+        color: var(--txt);
+        text-align: center;
+        outline: none;
+      }
+
+      .dict-row > input:focus {
+        background: #eff6ff;
+      }
+
+      .dict-row > input::placeholder {
+        color: #cbd5e1;
+        font-style: italic;
+        font-size: 0.82rem;
+      }
+
+      .dict-row > input.dict-from {
+        color: var(--red);
+      }
+
+      .dict-row > input.dict-to {
+        color: var(--green);
+        font-weight: 600;
+      }
+
+      .dict-del {
+        background: transparent;
+        border: none;
+        color: #cbd5e1;
+        cursor: pointer;
+        font-size: 1.25rem;
+        padding: 0;
+        font-weight: 400;
+        transition: 0.15s;
+        border-radius: 0;
+      }
+
+      .dict-del:hover {
+        background: #fef2f2;
+        color: var(--red);
+      }
+
+      .dict-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      /* اختيار الأعمدة */
+
+      .col-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 8px;
+        max-height: 300px;
+        overflow-y: auto;
+        padding: 12px;
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        margin-top: 10px;
+      }
+
+      .col-selector .check {
+        padding: 6px 9px;
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        font-size: 0.83rem;
+        transition: 0.15s;
+      }
+
+      .col-selector .check:hover {
+        border-color: var(--blue);
+      }
+
+      .col-selector .check.checked {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+      }
+
+      .col-selector .check input {
+        margin-left: 2px;
+      }
+
+      .col-selector .col-sample {
+        color: var(--mut);
+        font-size: 0.75rem;
+        margin-right: 5px;
+        font-style: italic;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+        display: inline-block;
+        vertical-align: bottom;
+      }
+
+      .status {
+        margin-top: 14px;
+        font-size: 0.88rem;
+        padding: 10px 13px;
+        border-radius: 10px;
+        background: #f1f5f9;
+        color: var(--mut);
+        border: 1px solid var(--line);
+      }
+
+      .status.ok {
+        background: #ecfdf5;
+        color: #047857;
+        border-color: #a7f3d0;
+      }
+
+      .status.err {
+        background: #fef2f2;
+        color: #b91c1c;
+        border-color: #fecaca;
+      }
+
+      .status.warn {
+        background: #fffbeb;
+        color: var(--amber);
+        border-color: #fde68a;
+      }
+
+      .progress {
+        height: 8px;
+        border-radius: 99px;
+        background: #e2e8f0;
+        overflow: hidden;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .progress.show {
+        display: block;
+      }
+
+      .progress > i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--blue), #60a5fa);
+        transition: width 0.2s;
+      }
+
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .pill {
+        background: #f1f5f9;
+        border: 1px solid var(--line);
+        border-radius: 99px;
+        padding: 5px 14px;
+        font-size: 0.83rem;
+        font-weight: 600;
+      }
+
+      .pill b {
+        color: var(--blue);
+      }
+
+      .pill.green b {
+        color: var(--green);
+      }
+
+      .pill.warn b {
+        color: var(--amber);
+      }
+
+      .pill.purple b {
+        color: #7c3aed;
+      }
+
+      .table-scroll {
+        overflow: auto;
+        max-height: 480px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        font-size: 0.85rem;
+      }
+
+      thead th {
+        position: sticky;
+        top: 0;
+        background: #f8fafc;
+        border-bottom: 1px solid var(--line);
+        padding: 9px 11px;
+        text-align: right;
+        font-weight: 700;
+        white-space: nowrap;
+        z-index: 2;
+      }
+
+      tbody td {
+        padding: 7px 11px;
+        border-bottom: 1px solid #f1f5f9;
+        white-space: nowrap;
+        max-width: 340px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      tbody tr:hover td {
+        background: #f8fafc;
+      }
+
+      tbody tr.dim td {
+        opacity: 0.38;
+        text-decoration: line-through;
+        text-decoration-color: #fca5a5;
+      }
+
+      tbody tr.skipped td {
+        background: #fef2f2 !important;
+        opacity: 0.55;
+        text-decoration: line-through;
+        text-decoration-color: #dc2626;
+      }
+
+      tbody tr.prefix-skip td {
+        background: #faf5ff !important;
+        opacity: 0.55;
+        text-decoration: line-through;
+        text-decoration-color: #a855f7;
+      }
+
+      td.target-col {
+        background: #eff6ff !important;
+        font-weight: 600;
+      }
+
+      thead th.target-col {
+        background: #dbeafe !important;
+      }
+
+      td.page-col {
+        background: #f1f5f9 !important;
+        color: var(--mut);
+        font-weight: 600;
+      }
+
+      thead th.col-off {
+        background: #f1f5f9 !important;
+        color: #94a3b8 !important;
+        text-decoration: line-through;
+      }
+
+      thead th.col-off::after {
+        content: " ✗";
+        color: #dc2626;
+        font-weight: 700;
+      }
+
+      tbody td.col-off {
+        background: #f8fafc !important;
+        color: #cbd5e1 !important;
+        text-decoration: line-through;
+        text-decoration-color: #fca5a5;
+      }
+
+      thead th.col-split {
+        background: #fef3c7 !important;
+      }
+
+      thead th.col-split.target-col {
+        background: #fde68a !important;
+      }
+
+      .muted {
+        color: var(--mut);
+        font-size: 0.83rem;
+        margin-top: 10px;
+      }
+
+      .empty {
+        padding: 26px;
+        text-align: center;
+        color: var(--mut);
+      }
+
+      code {
+        background: #f1f5f9;
+        padding: 1px 6px;
+        border-radius: 5px;
+        font-size: 0.85em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>📄 ← 📊 استخراج جداول PDF إلى Excel</h1>
+        <p>
+          استخراج الجداول، فصل الأعمدة المدمجة، تجاوز صفوف ببادئة نصية، اختيار
+          الأعمدة، والتصدير إلى Excel.
+        </p>
+      </header>
+
+      <section class="card">
+        <h2>1) اختر ملف PDF</h2>
+        <div class="drop" id="drop">
+          <div class="big">📄</div>
+          <p>اسحب الملف هنا وأفلته، أو اضغط لاختيار ملف</p>
+          <input
+            type="file"
+            id="fileInput"
+            accept=".pdf,application/pdf"
+            hidden
+          />
+        </div>
+        <div class="file-info" id="fileInfo"></div>
+
+        <div class="toolbar">
+          <button class="btn-primary" id="btnExtract" disabled>
+            ⚙️ استخراج الجداول
+          </button>
+          <button class="btn-green" id="btnExport" disabled>
+            ⬇️ تنزيل ملف Excel
+          </button>
+          <button class="btn-ghost" id="btnClear">🗑️ مسح</button>
+        </div>
+
+        <div class="status" id="status">في انتظار اختيار ملف…</div>
+        <div class="progress" id="progress"><i id="bar"></i></div>
+      </section>
+
+      <section class="card">
+        <h2>2) إعدادات الاستخراج والتصفية</h2>
+
+        <div class="section-title">🎯 تجاوز الصفوف حسب بادئة نص</div>
+        <div class="note purple">
+          تجاوز أي صف إذا كانت قيمة عمود معيّن <b>تبدأ بنص محدد</b> (مثل
+          <code>ttma_</code> في العمود التاسع). يُطبَّق هذا التجاوز
+          <b>قبل التصفية</b>.
+        </div>
+        <label class="check" style="margin-top: 10px">
+          <input type="checkbox" id="prefixSkipEnabled" checked />
+          تفعيل تجاوز الصفوف حسب البادئة
+        </label>
+        <div id="prefixRules" style="margin-top: 12px"></div>
+        <div class="dict-actions">
+          <button class="btn-ghost btn-sm" id="addPrefixRule" type="button">
+            + إضافة قاعدة
+          </button>
+          <button class="btn-ghost btn-sm" id="resetPrefixRules" type="button">
+            ↺ إعادة للافتراضي
+          </button>
+        </div>
+
+        <div class="section-title">🔧 فصل الأعمدة المدمجة</div>
+        <div class="note">
+          <b>💡 حل مشكلة اندماج الأعمدة:</b> إذا كان عمود واحد يحتوي على قيم
+          متعددة معًا (مثال: <code>41,829.07 17/06/2026 17/06/2026</code>)، فعّل
+          الخيار التالي ليقوم البرنامج بتقسيمها تلقائيًا إلى أعمدة منفصلة.
+        </div>
+        <div class="checks" style="margin-top: 12px">
+          <label class="check">
+            <input type="checkbox" id="splitCombined" checked />
+            فصل الأعمدة المدمجة (رقم + تاريخ/تواريخ)
+          </label>
+          <label class="check">
+            <input type="checkbox" id="splitStrict" />
+            وضع صارم: فصل فقط إذا كانت جميع القيم قابلة للفصل
+          </label>
+        </div>
+        <div class="muted" id="splitReport"></div>
+
+        <div class="section-title">🚫 تجاوز الصفوف (ترويسة / تذييل)</div>
+        <div class="grid">
+          <div class="field">
+            <label for="skipFirstPage">تجاوز أول (N) صف في الصفحة الأولى</label>
+            <input
+              type="number"
+              id="skipFirstPage"
+              value="7"
+              min="0"
+              step="1"
+            />
+          </div>
+          <div class="field">
+            <label for="skipOtherPages"
+              >تجاوز أول (N) صف في كل صفحة تالية</label
+            >
+            <input
+              type="number"
+              id="skipOtherPages"
+              value="2"
+              min="0"
+              step="1"
+            />
+          </div>
+          <div class="field">
+            <label for="skipLastPage">تجاوز آخر (N) صف في كل صفحة</label>
+            <input type="number" id="skipLastPage" value="1" min="0" step="1" />
+          </div>
+        </div>
+        <div class="checks" style="margin-top: 12px">
+          <label class="check"
+            ><input type="checkbox" id="skipEmptyRows" /> تجاوز الصفوف الفارغة
+            تمامًا</label
+          >
+          <label class="check"
+            ><input type="checkbox" id="showAll" /> إظهار كل الصفوف في
+            المعاينة</label
+          >
+        </div>
+
+        <div class="section-title">📐 إعدادات الاستخراج</div>
+        <div class="grid">
+          <div class="field">
+            <label for="yTol">تفاوت دمج الصفوف (نقاط)</label>
+            <input type="number" id="yTol" value="3" min="0.5" step="0.5" />
+          </div>
+          <div class="field">
+            <label for="gapTol">أدنى فجوة لفصل الخلايا (نقاط)</label>
+            <input type="number" id="gapTol" value="0" min="0" step="1" />
+            <small><code>0</code> = تلقائي.</small>
+          </div>
+          <div class="field">
+            <label for="targetCol">العمود المستخدم للتصفية</label>
+            <select id="targetCol">
+              <option value="first">أول عمود (أقصى اليسار)</option>
+            </select>
+            <small>الافتراضي: أول عمود من اليسار.</small>
+          </div>
+        </div>
+
+        <div class="section-title">✅ اختيار الأعمدة المطلوبة في التصدير</div>
+        <div class="note green">
+          ألغِ تحديد الأعمدة غير المرغوب فيها — لن تُصدَّر إلى Excel.
+        </div>
+        <div class="col-selector" id="columnSelector">
+          <span class="muted">سيتم عرض الأعمدة بعد الاستخراج…</span>
+        </div>
+        <div class="dict-actions">
+          <button class="btn-ghost btn-sm" id="selectAllCols" type="button">
+            ✓ تحديد الكل
+          </button>
+          <button class="btn-ghost btn-sm" id="clearAllCols" type="button">
+            ✗ إلغاء تحديد الكل
+          </button>
+          <button class="btn-ghost btn-sm" id="invertCols" type="button">
+            ⇄ عكس التحديد
+          </button>
+        </div>
+
+        <div class="section-title">🕌 معالجة النص العربي</div>
+        <div class="grid" style="margin-top: 14px">
+          <div class="field">
+            <label for="arabicMode">وضع معالجة النص العربي</label>
+            <select id="arabicMode">
+              <option value="auto" selected>تلقائي (كشف ذكي)</option>
+              <option value="normalize">تنظيف فقط (بدون عكس)</option>
+              <option value="always">عكس دائمًا</option>
+              <option value="words">عكس ترتيب الكلمات فقط</option>
+              <option value="off">معطّل تمامًا</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="reversalScope">نطاق العكس</label>
+            <select id="reversalScope">
+              <option value="runs" selected>المقاطع العربية فقط (الأدق)</option>
+              <option value="all">عكس النص كاملًا</option>
+            </select>
+          </div>
+        </div>
+        <div class="checks" style="margin-top: 12px">
+          <label class="check"
+            ><input type="checkbox" id="joinArabicLetters" checked /> دمج الحروف
+            العربية المفصولة بمسافات</label
+          >
+          <label class="check"
+            ><input type="checkbox" id="removeTatweel" checked /> إزالة حرف
+            التطويل (ـ)</label
+          >
+          <label class="check"
+            ><input type="checkbox" id="removeDiacritics" /> إزالة
+            التشكيل</label
+          >
+        </div>
+
+        <div class="section-title">📖 قاموس استبدال الحروف الغريبة</div>
+        <div class="note green">
+          اكتب في <b>العمود الأول (أحمر)</b> الحرف الغريب، وفي
+          <b>العمود الثاني (أخضر)</b> ما تريد استبداله به. يمكنك تعديل القاموس
+          الافتراضي في الكود عبر المتغير <code>DEFAULT_ARABIC_DICT</code>.
+        </div>
+        <div class="dict-table">
+          <div class="dict-header">
+            <div>الحروف الغريبة</div>
+            <div>النص العربي</div>
+            <div></div>
+          </div>
+          <div id="dictRows"></div>
+        </div>
+        <div class="dict-actions">
+          <button class="btn-ghost btn-sm" id="addDictRow" type="button">
+            + إضافة سطر
+          </button>
+          <button class="btn-ghost btn-sm" id="resetDict" type="button">
+            ↺ إعادة تعيين للافتراضي
+          </button>
+        </div>
+
+        <div class="section-title">🎯 خيارات التصفية</div>
+        <div class="checks">
+          <label class="check"
+            ><input type="checkbox" id="dropZero" checked /> حذف الصفوف التي
+            قيمتها = صفر</label
+          >
+          <label class="check"
+            ><input type="checkbox" id="dropNonNum" checked /> حذف الصفوف بلا
+            رقم (العناوين)</label
+          >
+          <label class="check"
+            ><input type="checkbox" id="numericCells" checked /> تحويل الأرقام
+            إلى قيم رقمية في Excel</label
+          >
+          <label class="check"
+            ><input type="checkbox" id="splitMixed" checked /> فصل الخلايا
+            المختلطة (نص + تاريخ/رقم)</label
+          >
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>3) المعاينة والنتيجة</h2>
+        <div class="stats" id="stats"></div>
+        <div id="previewWrap">
+          <div class="empty" id="previewEmpty">
+            لا توجد بيانات بعد. اختر ملف PDF ثم اضغط «استخراج الجداول».
+          </div>
+          <div class="table-scroll" id="previewScroll" style="display: none">
+            <table id="preview">
+              <thead id="previewHead"></thead>
+              <tbody id="previewBody"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="muted" id="previewNote"></div>
+      </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script></script>
+  </body>
+</html>
